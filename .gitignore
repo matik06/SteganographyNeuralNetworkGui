@@ -11,7 +11,7 @@ Makefile.Release
 
 /debug
 /relase
-/src
+#/src
 
 NeuralNetworkGui
 
