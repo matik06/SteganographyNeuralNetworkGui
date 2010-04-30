@@ -1,0 +1,17 @@
+*.svn
+*.settings
+*.project
+*.cproject
+
+*.*~
+
+Makefile
+Makefile.Debug
+Makefile.Release
+
+/debug
+/relase
+/src
+
+NeuralNetworkGui
+
