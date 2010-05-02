@@ -2,8 +2,7 @@ TEMPLATE = app
 TARGET = NeuralNetworkGui
 QT += core \
     gui
-HEADERS += nowe.h \
-    learningstacistics.h \
+HEADERS += learningstacistics.h \
     src/DifferentialEvolution.h \
     src/EnumTypes.h \
     src/EvolutionaryAlgorithm.h \
@@ -24,8 +23,7 @@ HEADERS += nowe.h \
     networksettings.h \
     soma.h \
     neuralnetworkgui.h
-SOURCES += nowe.cpp \
-    learningstacistics.cpp \
+SOURCES += learningstacistics.cpp \
     src/DifferentialEvolution.cpp \
     src/EvolutionaryAlgorithm.cpp \
     src/Individual.cpp \
@@ -46,8 +44,7 @@ SOURCES += nowe.cpp \
     soma.cpp \
     main.cpp \
     neuralnetworkgui.cpp
-FORMS += nowe.ui \
-    de.ui \
+FORMS += de.ui \
     layerssize.ui \
     mainwindow.ui \
     networksettings.ui \
