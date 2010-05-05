@@ -2,7 +2,8 @@ TEMPLATE = app
 TARGET = NeuralNetworkGui
 QT += core \
     gui
-HEADERS += learningstacistics.h \
+HEADERS += FileManager.h \
+    learningstacistics.h \
     src/DifferentialEvolution.h \
     src/EnumTypes.h \
     src/EvolutionaryAlgorithm.h \
@@ -23,7 +24,8 @@ HEADERS += learningstacistics.h \
     networksettings.h \
     soma.h \
     neuralnetworkgui.h
-SOURCES += learningstacistics.cpp \
+SOURCES += FileManager.cpp \
+    learningstacistics.cpp \
     src/DifferentialEvolution.cpp \
     src/EvolutionaryAlgorithm.cpp \
     src/Individual.cpp \

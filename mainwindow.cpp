@@ -120,7 +120,8 @@ void MainWindow::learning()
 	  {
 		    int nrPatterns = _getNumberOfLines(fileName);
 			double **inputs = new double*[dataSettings().nrInputData];
-			double**patterns = new double*[dataSettings().layersSize[dataSettings().nrOfLayers] -1];
+			double **patterns = new double*[dataSettings().layersSize[dataSettings().nrOfLayers] -1];
+
 			for(int i = 0 ; i < nrPatterns;i++)
 			{
 				inputs[i] = new double[dataSettings().nrInputData];
