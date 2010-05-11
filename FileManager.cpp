@@ -29,11 +29,8 @@ FileManager::FileManager(QString path, QString fileName){
 	}
 }
 
-FileManager::FileManager() {
-	this->_file = NULL;
-}
-
 FileManager::~FileManager() {
+	//if file is opened - close it
 	if (this->_file->isOpen()) {
 		this->_file->close();
 	}
@@ -50,16 +47,18 @@ bool FileManager::readData(int iNrInput, int iNrOutput, double **& aInputData,
 
 	QTextStream ts(_file);
 
-	//reading first line from txt folder. In first line should be number of data sets.
+	//reading number of sets in file
 	int iNrDataSet = countNrSets( ts );
 
 	if (iNrDataSet < 2) {
 		return false;
 	}
 
+	//initializing arrrays
 	initializeArray(aInputData, iNrDataSet, iNrInput);
 	initializeArray(aOutputData, iNrDataSet, iNrOutput);
 
+	//reading data sets from file
 	readChar(ts, '{');
 
 	for (int i = 0; i < iNrDataSet; ++i) {
@@ -86,6 +85,7 @@ bool FileManager::createFileWithWeights(int iNrLayer, int iNrNeurons [],
 
 	QTextStream ts(_file);
 
+	//create array with number of weights for neurons in every layer
 	int * aNrWeights = new int[iNrLayer];
 	aNrWeights[0] = iNrInputWeights;
 
@@ -93,6 +93,7 @@ bool FileManager::createFileWithWeights(int iNrLayer, int iNrNeurons [],
 		aNrWeights[i] = iNrNeurons[i-1];
 	}
 
+	//saving data to file
 	ts << '{';
 	for (int i = 0; i < iNrLayer; ++i) {
 		ts << '{';
@@ -131,7 +132,7 @@ void FileManager::readData( QTextStream & ts, double * aData, int iDataSize )
 	readChar(ts, '{');
 
 	for (int i = 0; i < iDataSize - 1; ++i) {
-		ts >> aData[i];	//reading single number from set
+		ts >> aData[i];			//reading single number from set
 		readChar(ts, ',');
 	}
 
@@ -167,14 +168,6 @@ void FileManager::writeComa(QTextStream & ts, int index, int max)
 
 int FileManager::countNrSets( QTextStream & ts )
 {
-//	QString s = "nothing";
-//	int result = 0;
-//
-//	while ( !(s = ts.readLine()).isNull() )
-//	{
-//		result += s.count('{');
-//	};
-
 	int result = ts.readAll().count('{');
 	result -= 1;
 	result /= 3;
