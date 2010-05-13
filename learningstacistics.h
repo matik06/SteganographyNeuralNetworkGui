@@ -2,7 +2,7 @@
 #define LEARNINGSTACISTICS_H
 
 #include <QtGui/QWidget>
-#include "Singleton.h"
+#include "src/Singleton.h"
 #include "src/EnumTypes.h"
 
 class QTextEdit;

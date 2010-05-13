@@ -2,7 +2,7 @@
 #define DE_H
 
 #include <QtGui/QDialog>
-#include "Singleton.h"
+#include "src/Singleton.h"
 
 class QPushButton;
 class QLineEdit;

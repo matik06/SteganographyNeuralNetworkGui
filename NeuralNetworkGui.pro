@@ -2,7 +2,9 @@ TEMPLATE = app
 TARGET = NeuralNetworkGui
 QT += core \
     gui
-HEADERS += src/neuralNetwork/Layer.h \
+HEADERS += src/FileManager.h \
+    src/Singleton.h \
+    src/neuralNetwork/Layer.h \
     src/neuralNetwork/LinearNeuron.h \
     src/neuralNetwork/NeuralNetwork.h \
     src/neuralNetwork/Neuron.h \
@@ -18,14 +20,15 @@ HEADERS += src/neuralNetwork/Layer.h \
     src/trainingAlgorithms/SOMA.h \
     learningstacistics.h \
     src/EnumTypes.h \
-    Singleton.h \
     de.h \
     layerssize.h \
     mainwindow.h \
     networksettings.h \
     soma.h \
     neuralnetworkgui.h
-SOURCES += src/neuralNetwork/Layer.cpp \
+SOURCES += src/FileManager.cpp \
+    src/Singleton.cpp \
+    src/neuralNetwork/Layer.cpp \
     src/neuralNetwork/LinearNeuron.cpp \
     src/neuralNetwork/NeuralNetwork.cpp \
     src/neuralNetwork/Neuron.cpp \
@@ -40,7 +43,6 @@ SOURCES += src/neuralNetwork/Layer.cpp \
     src/trainingAlgorithms/Population.cpp \
     src/trainingAlgorithms/SOMA.cpp \
     learningstacistics.cpp \
-    Singleton.cpp \
     de.cpp \
     layerssize.cpp \
     mainwindow.cpp \

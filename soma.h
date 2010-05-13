@@ -7,7 +7,7 @@ class QVBoxLayout;
 class QCheckBox;
 
 #include <QtGui/QDialog>
-#include "Singleton.h"
+#include "src/Singleton.h"
 
 class Soma : public QDialog
 {

@@ -4,7 +4,7 @@
 #include <QtGui/QWidget>
 #include "ui_layerssize.h"
 #include <QDialog>
-#include "Singleton.h"
+#include "src/Singleton.h"
 #include "src/EnumTypes.h"
 
 class QLabel;

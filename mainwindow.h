@@ -13,6 +13,7 @@ class QPushButton;
 #include "src/trainingAlgorithms/DifferentialEvolution.h"
 #include "learningstacistics.h"
 #include "src/trainingAlgorithms/Individual.h"
+//#include "src/Singleton.h"
 #include <sstream>
 #include <string>
 
