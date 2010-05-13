@@ -12,7 +12,7 @@
 #include <iostream>
 #include <ctime>
 
-#include "NeuralNetwork.h"
+#include "../neuralNetwork/NeuralNetwork.h"
 
 class Individual {
 

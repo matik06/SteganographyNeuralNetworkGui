@@ -9,7 +9,7 @@
 #define POPULATION_H_
 
 #include "Individual.h"
-#include "EnumTypes.h"
+#include "../EnumTypes.h"
 
 class Population {
 private:

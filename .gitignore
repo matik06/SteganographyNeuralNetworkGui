@@ -3,16 +3,16 @@
 *.project
 *.cproject
 
+settings
+settings.ns
+layerssize
+
 *.*~
 
-Makefile
-Makefile.Debug
-Makefile.Release
 input data_results.txt
 
 /debug
 /relase
-#/src
 
 NeuralNetworkGui
 

@@ -4,8 +4,8 @@
 #include <QApplication>
 
 #include "mainwindow.h"
-#include "src/EvolutionaryAlgorithm.h"
-#include "src/NeuralNetwork.h"
+#include "src/trainingAlgorithms/EvolutionaryAlgorithm.h"
+#include "src/neuralNetwork/NeuralNetwork.h"
 
 
 

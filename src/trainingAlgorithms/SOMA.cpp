@@ -158,3 +158,4 @@ Individual SOMA::_CalculateForStep(double dt,int iActiveIndex, int iLeaderIndex)
 	delete [] dTmpParam;
 	return tmpIndividual;	//wywoluje sie konstrukotr kopiujacy
 }
+

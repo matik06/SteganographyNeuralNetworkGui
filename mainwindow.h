@@ -7,12 +7,12 @@ class QPushButton;
 #include "ui_mainwindow.h"
 #include "networksettings.h"
 #include "src/EnumTypes.h"
-#include "src/NeuralNetwork.h"
-#include "src/EvolutionaryAlgorithm.h"
-#include "src/SOMA.h"
-#include "src/DifferentialEvolution.h"
+#include "src/neuralNetwork/NeuralNetwork.h"
+#include "src/trainingAlgorithms/EvolutionaryAlgorithm.h"
+#include "src/trainingAlgorithms/SOMA.h"
+#include "src/trainingAlgorithms/DifferentialEvolution.h"
 #include "learningstacistics.h"
-#include "src/Individual.h"
+#include "src/trainingAlgorithms/Individual.h"
 #include <sstream>
 #include <string>
 

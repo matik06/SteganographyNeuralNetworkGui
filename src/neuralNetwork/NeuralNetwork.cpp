@@ -152,12 +152,10 @@ double * NeuralNetwork::getNeuralNetworkOutput( double aInputSignal[] )
 
 void NeuralNetwork::setPatterns( double ** aPatterns, int nrPatterns )
 {
-	this->_iNrPaterns = nrPatterns;
-
 	//deleting old array with patterns
 	if( this->_aPatterns != 0 )
 	{
-		for(int i = 0; i < nrPatterns; i++)
+		for(int i = 0; i < _iNrPaterns; i++)
 		{
 			delete [] _aPatterns[i];
 		}
@@ -169,20 +167,17 @@ void NeuralNetwork::setPatterns( double ** aPatterns, int nrPatterns )
 	for(int i = 0; i < nrPatterns; i++)
 	{
 		this->_aPatterns[i] = new double[this->_iOutputLayerSize];
-
 		for(int j = 0; j < this->_iOutputLayerSize; j++)
 		{
 			this->_aPatterns[i][j] = aPatterns[i][j];
 		}
 	}
-
 }
 
 double NeuralNetwork::getCostValue( double aWeights[], double ** aInputData )
 {
 	double * output;//
 	double * tmpCV = new double[this->_iNrPaterns];
-	double singleCV;
 	double result = 0;
 
 	//set weights in neural network from best individual parameters
@@ -195,14 +190,12 @@ double NeuralNetwork::getCostValue( double aWeights[], double ** aInputData )
 		//counting output for one set of data
 		output = this->getNeuralNetworkOutput( aInputData[i] );
 
-		singleCV = 0;
 		//counting cost value for single set of data
 		for(int j = 0; j < this->_iOutputLayerSize; j++)
 		{
 			//tmpCV[j] = |p1-y1|+|p2-y2|+|p3-y3|...
-			singleCV += fabs( this->_aPatterns[i][j] - output[j] );
+			tmpCV[j] += fabs( this->_aPatterns[i][j] - output[j] );
 		}
-		tmpCV[i] = singleCV;
 
 		delete[] output;
 	}

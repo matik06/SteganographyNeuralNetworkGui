@@ -2,21 +2,22 @@ TEMPLATE = app
 TARGET = NeuralNetworkGui
 QT += core \
     gui
-HEADERS += FileManager.h \
+HEADERS += src/neuralNetwork/Layer.h \
+    src/neuralNetwork/LinearNeuron.h \
+    src/neuralNetwork/NeuralNetwork.h \
+    src/neuralNetwork/Neuron.h \
+    src/neuralNetwork/RecognizeTool.h \
+    src/neuralNetwork/SigmoidalBPNeuron.h \
+    src/neuralNetwork/SigmoidalNeuron.h \
+    src/neuralNetwork/SigmoidalUPNeuron.h \
+    src/neuralNetwork/TanhNeuron.h \
+    src/trainingAlgorithms/DifferentialEvolution.h \
+    src/trainingAlgorithms/EvolutionaryAlgorithm.h \
+    src/trainingAlgorithms/Individual.h \
+    src/trainingAlgorithms/Population.h \
+    src/trainingAlgorithms/SOMA.h \
     learningstacistics.h \
-    src/DifferentialEvolution.h \
     src/EnumTypes.h \
-    src/EvolutionaryAlgorithm.h \
-    src/Individual.h \
-    src/Layer.h \
-    src/NeuralNetwork.h \
-    src/Neuron.h \
-    src/Population.h \
-    src/SOMA.h \
-    src/SigmoidalBPNeuron.h \
-    src/SigmoidalNeuron.h \
-    src/SigmoidalUPNeuron.h \
-    src/TanhNeuron.h \
     Singleton.h \
     de.h \
     layerssize.h \
@@ -24,20 +25,21 @@ HEADERS += FileManager.h \
     networksettings.h \
     soma.h \
     neuralnetworkgui.h
-SOURCES += FileManager.cpp \
+SOURCES += src/neuralNetwork/Layer.cpp \
+    src/neuralNetwork/LinearNeuron.cpp \
+    src/neuralNetwork/NeuralNetwork.cpp \
+    src/neuralNetwork/Neuron.cpp \
+    src/neuralNetwork/RecognizeTool.cpp \
+    src/neuralNetwork/SigmoidalBPNeuron.cpp \
+    src/neuralNetwork/SigmoidalNeuron.cpp \
+    src/neuralNetwork/SigmoidalUPNeuron.cpp \
+    src/neuralNetwork/TanhNeuron.cpp \
+    src/trainingAlgorithms/DifferentialEvolution.cpp \
+    src/trainingAlgorithms/EvolutionaryAlgorithm.cpp \
+    src/trainingAlgorithms/Individual.cpp \
+    src/trainingAlgorithms/Population.cpp \
+    src/trainingAlgorithms/SOMA.cpp \
     learningstacistics.cpp \
-    src/DifferentialEvolution.cpp \
-    src/EvolutionaryAlgorithm.cpp \
-    src/Individual.cpp \
-    src/Layer.cpp \
-    src/NeuralNetwork.cpp \
-    src/Neuron.cpp \
-    src/Population.cpp \
-    src/SOMA.cpp \
-    src/SigmoidalBPNeuron.cpp \
-    src/SigmoidalNeuron.cpp \
-    src/SigmoidalUPNeuron.cpp \
-    src/TanhNeuron.cpp \
     Singleton.cpp \
     de.cpp \
     layerssize.cpp \

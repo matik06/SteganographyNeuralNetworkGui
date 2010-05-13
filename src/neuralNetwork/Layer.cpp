@@ -61,6 +61,10 @@ void Layer::_setNeurons( KindOfNeuron::Enum neuronType, int iNrInputData,
 			{
 				this->_aNeurons[i] = new TanhNeuron(iNrInputData, dAlfa);
 			}; break;
+		case KindOfNeuron::LINEAR:
+			for (int i = 0; i < _iNrNeurons; ++i) {
+				this->_aNeurons[i] = new LinearNeuron(iNrInputData);
+			}; break;
 	}
 }
 

@@ -12,8 +12,9 @@
 #include "TanhNeuron.h"
 #include "SigmoidalUPNeuron.h"
 #include "SigmoidalBPNeuron.h"
+#include "LinearNeuron.h"
 
-#include "EnumTypes.h"
+#include "../EnumTypes.h"
 
 class Layer
 {

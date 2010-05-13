@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'neuralnetworkgui.ui'
 **
-** Created: Wed Dec 9 02:15:07 2009
-**      by: Qt User Interface Compiler version 4.5.0
+** Created: Thu May 13 12:09:24 2010
+**      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/

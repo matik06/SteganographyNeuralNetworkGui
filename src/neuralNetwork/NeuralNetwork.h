@@ -9,10 +9,9 @@
 #define NEURALNETWORK_H_
 
 #include <cmath>
-#include "Individual.h"
+#include "../trainingAlgorithms/Individual.h"
 #include "Layer.h"
-#include "EnumTypes.h"
-//#include "EvolutionaryAlgorithm.h"
+#include "../EnumTypes.h"
 
 
 class NeuralNetwork

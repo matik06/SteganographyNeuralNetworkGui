@@ -9,8 +9,8 @@
 #define ALGORITHM_H_
 
 #include "Population.h"
-#include "NeuralNetwork.h"
-#include "EnumTypes.h"
+#include "../neuralNetwork/NeuralNetwork.h"
+#include "../EnumTypes.h"
 
 
 class EvolutionaryAlgorithm {
@@ -42,7 +42,7 @@ public:
 	 * @return: Individual
 	 */
 	virtual Individual simulate(OptymalizationType::Enum oType, NeuralNetwork & network,
-								double ** dInputData ) = 0;
+								double ** dInputData) = 0;
 
     /**
      * get population in algorythm
