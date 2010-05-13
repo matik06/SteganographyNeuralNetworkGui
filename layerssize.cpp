@@ -115,6 +115,8 @@ QComboBox * LayersSize::getActivationCBox()
 	activationCB->insertItem(0, tr("Sigmoidal UP"));
 	activationCB->insertItem(1, tr("Sigmoidal BP"));
 	activationCB->insertItem(2, tr("Tanh"));
+	activationCB->insertItem(3, tr("Linear"));
+
 
 	return activationCB;
 }
@@ -214,6 +216,11 @@ void LayersSize::showActivParameter()
 			alfaLine[i]->setEnabled(true);
 			betaLine[i]->setEnabled(false);
 		}
+		else if(index == 3)
+		{
+			alfaLine[i]->setEnabled(false);
+			betaLine[i]->setEnabled(false);
+		}
 	}
 
 }
@@ -290,6 +297,12 @@ void LayersSize::saveDataToSingleton()
 			alfaParameters[i] = alfaLine[i]->text().toDouble();
 			betaParameters[i] = 0.5;
 		}
+		else if(index == 3)
+		{
+			neuronsType[i] = KindOfNeuron::LINEAR;
+			alfaParameters[i] = 0.5;
+			betaParameters[i] = 0.5;
+		}
 	}
 
 	dataSettings().layersSize = getLayersSize();
@@ -343,6 +356,14 @@ void LayersSize::readDataFromSingleton()
 				betaLine[i]->setEnabled(false);
 				alfaLine[i]->setText( tmp.setNum(dataSettings().alfa[i]) );
 				alfaLine[i]->setEnabled(true);
+			}
+			else if (dataSettings().neuronType[i] == KindOfNeuron::LINEAR)
+			{
+				activatiFunctionCheckBox[i]->setCurrentIndex(3);
+				betaLine[i]->setText( tr("0.5") );
+				betaLine[i]->setEnabled( false );
+				alfaLine[i]->setText( tr("0.5") );
+				alfaLine[i]->setEnabled( false );
 			}
 		}
 }
