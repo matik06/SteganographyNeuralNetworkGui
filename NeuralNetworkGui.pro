@@ -2,8 +2,10 @@ TEMPLATE = app
 TARGET = NeuralNetworkGui
 QT += core \
     gui
-HEADERS += src/FileManager.h \
+HEADERS += src/ReadDataFile.h \
     src/Singleton.h \
+    src/WriteDataFile.h \
+    src/FileManager.h \
     src/neuralNetwork/Layer.h \
     src/neuralNetwork/LinearNeuron.h \
     src/neuralNetwork/NeuralNetwork.h \
@@ -26,8 +28,10 @@ HEADERS += src/FileManager.h \
     networksettings.h \
     soma.h \
     neuralnetworkgui.h
-SOURCES += src/FileManager.cpp \
+SOURCES += src/ReadDataFile.cpp \
     src/Singleton.cpp \
+    src/WriteDataFile.cpp \
+    src/FileManager.cpp \
     src/neuralNetwork/Layer.cpp \
     src/neuralNetwork/LinearNeuron.cpp \
     src/neuralNetwork/NeuralNetwork.cpp \

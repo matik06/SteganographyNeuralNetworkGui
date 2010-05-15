@@ -6,10 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	WriteDataFile::createMainFolder();
+	readSettingsFromFile("asdf", false);
+
 	srand((int)time(NULL));
 
 	readSettingsFromFile(tr("settings.ns"), false);
-
 
 	QVBoxLayout * vBox = createButtonsLayout();
 
@@ -25,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	setLayout(vBox);
 	setWindowTitle(tr("Recognition Tool"));
+
+	neuralNetwork = NULL;
+	evolutionaryAlgorithm = NULL;
 
 	setMaximumSize(300, 180);
 }
@@ -92,8 +97,11 @@ void MainWindow::settings()
 	{
 		saveSettingsToFile(tr("settings.ns"), false);
 
-		delete evolutionaryAlgorithm;
-		delete neuralNetwork;
+		if (neuralNetwork != NULL )
+			delete neuralNetwork;
+		if (evolutionaryAlgorithm != NULL)
+			delete evolutionaryAlgorithm;
+
 		initializeNeuralNetworkObjects();
 	}
 
@@ -110,7 +118,7 @@ void MainWindow::learning()
 {
 	 QString fileName = QFileDialog::getOpenFileName(this,
 	        tr("Open File with Patterns"), "",
-	        tr("text file (*.txt);;All Files (*)"));
+	        tr("txt file (*.txt);;All Files (*)"));
 	  if (fileName.isEmpty())
 	  {
 		  QMessageBox::warning(this,tr("Learning Failed"),tr("Please choose pattern file before learning!!!"));
@@ -703,160 +711,23 @@ QString MainWindow::_getWeights()
 
 void MainWindow::saveSettingsToFile(QString fileName, bool weights)
 {
-	//neural network settings
-	struct sSettings settings;
-	settings.EvolAlgorithm = dataSettings().EvolAlgorithm;
-	settings.nrOfLayers = dataSettings().nrOfLayers;
-	settings.oType = dataSettings().oType;
-	settings.nrInputData =  dataSettings().nrInputData;
-
-	//soma settings
-	settings.migrations = dataSettings().migrations;
-	settings.popSizeSoma = dataSettings().popSizeSoma;
-	settings.step = dataSettings().step;
-	settings.pathLength = dataSettings().pathLength;
-	settings.PRT = dataSettings().PRT;
-	settings.accError = dataSettings().accError;
-
-	//de settings
-	settings.popSizeDE = dataSettings().popSizeDE;
-	settings.iterations = dataSettings().iterations;
-	settings.mutationConstant = dataSettings().mutationConstant;
-	settings.crossover = dataSettings().crossover;
-	settings.weightsNumber = dataSettings().weightsNumber;
-
-	FILE * file;
-	file = fopen(fileName.toAscii().data(), "w");
-	//params - no arrays
-	fwrite(&settings, sizeof(settings), 1, file);
-
-	//layersSize
-	fwrite(dataSettings().layersSize, sizeof(int), dataSettings().nrOfLayers, file);
-	//neuronType
-	fwrite(dataSettings().neuronType, sizeof(KindOfNeuron::Enum), dataSettings().nrOfLayers, file);
-	//alfa
-	fwrite(dataSettings().alfa, sizeof(double), dataSettings().nrOfLayers, file);
-	//beta
-	fwrite(dataSettings().beta, sizeof(double), dataSettings().nrOfLayers, file);
-
-	if(weights)
-	{
-		fwrite(dataSettings().weights, sizeof(double), dataSettings().weightsNumber, file);
-	}
-
-	fclose(file);
+	WriteDataFile wdf = WriteDataFile(dataSettings().PROGRAM_SETTINGS_FILE_NAME);
+	wdf.saveSettingsToFile( dataSettings(), false);
 }
 
+// w zasadzie to można usunąć tą metodę
+//ustawić zmienne globalne dotyczące ścieżek i nazw plików!!!!!!!!!!!!
 void MainWindow::readSettingsFromFile(QString fileName, bool weights)
 {
-	sSettings settings;
+	ReadDataFile rdf = ReadDataFile(QString("data") + QDir::separator(),
+			dataSettings().PROGRAM_SETTINGS_FILE_NAME);
 
-	FILE * file;
-	file = fopen(fileName.toAscii().data(), "r");
-
-	if( file != 0 )
-	{
-		fread(&settings, sizeof(struct sSettings), 1, file);
-
-		//
-		dataSettings().EvolAlgorithm = settings.EvolAlgorithm;
-		dataSettings().nrOfLayers = settings.nrOfLayers;
-		dataSettings().oType = settings.oType;
-		dataSettings().nrInputData = settings.nrInputData;
-
-		dataSettings().migrations = settings.migrations;
-		dataSettings().popSizeSoma = settings.popSizeSoma;
-		dataSettings().step = settings.step;
-		dataSettings().pathLength = settings.pathLength;
-		dataSettings().PRT = settings.PRT;
-		dataSettings().accError = settings.accError;
-
-		dataSettings().popSizeDE = settings.popSizeDE;
-		dataSettings().iterations = settings.iterations;
-		dataSettings().crossover = settings.crossover;
-		dataSettings().mutationConstant = settings.mutationConstant;
-
-		dataSettings().weightsNumber = settings.weightsNumber;
-
-		int * layersSizeTab = new int[dataSettings().nrOfLayers];
-		KindOfNeuron::Enum * neuronsTypeTab = new KindOfNeuron::Enum[dataSettings().nrOfLayers];
-		double * alfaTab = new double[dataSettings().nrOfLayers];
-		double * betaTab = new double[dataSettings().nrOfLayers];
-
-		fread(layersSizeTab, sizeof(int), dataSettings().nrOfLayers, file);
-		fread(neuronsTypeTab, sizeof(KindOfNeuron::Enum), dataSettings().nrOfLayers, file);
-		fread(alfaTab, sizeof(double), dataSettings().nrOfLayers, file);
-		fread(betaTab, sizeof(double), dataSettings().nrOfLayers, file);
-
-		dataSettings().layersSize = layersSizeTab;
-		dataSettings().neuronType = neuronsTypeTab;
-		dataSettings().alfa = alfaTab;
-		dataSettings().beta = betaTab;
-
-		initializeNeuralNetworkObjects();
-		if(weights)
-		{
-			double * weightsTab = new double[dataSettings().weightsNumber];
-			fread(weightsTab, sizeof(double), dataSettings().weightsNumber, file);
-			dataSettings().weights = weightsTab;
-			neuralNetwork->setWeights(weightsTab);
-		}
-		else
-		{
-			dataSettings().weights = 0;
-		}
-
-		fclose(file);
-	}
-	else
-	{
-		setDefaultValuesFroSingleton();
-		initializeNeuralNetworkObjects();
-	}
+	rdf.loadSettingsFromFile(dataSettings(), false);
 }
 
 void MainWindow::setDefaultValuesFroSingleton()
 {
-	int * layerssize = new int[3];
-	layerssize[0] = 10; layerssize[1] = 10; layerssize[2] = 10;
-	double * alfaTab = new double[3];
-	alfaTab[0] = 0.5; alfaTab[1] = 0.5; alfaTab[2] = 0.5;
-	double * betaTab = new double[3];
-	betaTab[0] = 0.5; betaTab[1] = 0.5; betaTab[2] = 0.5;
-
-	KindOfNeuron::Enum * neuronsTypeTab = new KindOfNeuron::Enum[3];
-	neuronsTypeTab[0] = KindOfNeuron::SIGMOIDAL_UP_NEURON;
-	neuronsTypeTab[1] = KindOfNeuron::SIGMOIDAL_UP_NEURON;
-	neuronsTypeTab[2] = KindOfNeuron::SIGMOIDAL_UP_NEURON;
-
-	//neural network settings
-	dataSettings().EvolAlgorithm = EvolAlgorithm::SOMA;
-	dataSettings().alfa = alfaTab;
-	dataSettings().beta = betaTab;
-
-	dataSettings().layersSize = layerssize;
-	dataSettings().neuronType = neuronsTypeTab;
-	dataSettings().nrOfLayers = 3;
-	dataSettings().oType = OptymalizationType::MINIMIM;
-	dataSettings().nrInputData = 30;
-
-	//soma settings
-	dataSettings().migrations = 25;
-	dataSettings().popSizeSoma = 10;
-	dataSettings().step = 0.3;
-	dataSettings().pathLength = 3.0;
-	dataSettings().PRT = 0.4;
-	dataSettings().accError = -1;
-
-	//de
-	dataSettings().iterations = 25;
-	dataSettings().popSizeDE = 10;
-	dataSettings().mutationConstant = 0.8;
-	dataSettings().crossover = 0.25;
-
-	dataSettings().weightsNumber = 0;
-
-	QString s;
+	dataSettings().setDeafultValues();
 }
 
 void MainWindow::initializeNeuralNetworkObjects()

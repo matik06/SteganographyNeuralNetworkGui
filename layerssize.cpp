@@ -6,6 +6,8 @@ LayersSize::LayersSize(QWidget *parent, int size, int values[])
 {
 	setModal(true);
 
+	dataSettings().weightsNumber;
+
 	initialization(size);
 	QVBoxLayout * mainLayout = createMainLayout(size);
 	readDataFromSingleton();

@@ -37,9 +37,11 @@ public:
 	bool createFileWithWeights(int iNrLayer, int iNrNeurons [], int iNrWeights,
 			double *** aWeights);
 
+	static void createMainFoder();
+
 protected:
 
-	static void createMainFoder(QString folderName);
+
 
 	void readData(QTextStream & ts, double * aData, int iDataSize);
 	void readChar(QTextStream & ts, char c);

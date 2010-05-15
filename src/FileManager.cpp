@@ -11,8 +11,6 @@ QString FileManager::_sMainFolderName = "data";
 
 FileManager::FileManager(QString fileName) {
 
-	createMainFoder(_sMainFolderName);
-
 	_file = new QFile( QDir::currentPath() + QDir::separator() + _sMainFolderName +
 			QDir::separator() + fileName);
 
@@ -118,10 +116,10 @@ bool FileManager::createFileWithWeights(int iNrLayer, int iNrNeurons [],
 			 *					private methods
  *****************************************************************************/
 
-void FileManager::createMainFoder(QString folderName)
+void FileManager::createMainFoder()
 {
 	QDir dir;
-	dir.mkdir(QDir::currentPath() + QDir::separator() + folderName);
+	dir.mkdir(QDir::currentPath() + QDir::separator() + _sMainFolderName);
 }
 
 
@@ -167,14 +165,6 @@ void FileManager::writeComa(QTextStream & ts, int index, int max)
 
 int FileManager::countNrSets( QTextStream & ts )
 {
-//	QString s = "nothing";
-//	int result = 0;
-//
-//	while ( !(s = ts.readLine()).isNull() )
-//	{
-//		result += s.count('{');
-//	};
-
 	int result = ts.readAll().count('{');
 	result -= 1;
 	result /= 3;
