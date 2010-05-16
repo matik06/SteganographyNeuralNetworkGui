@@ -10,6 +10,7 @@
 
 #include "EvolutionaryAlgorithm.h"
 #include "Population.h"
+#include "../Singleton.h"
 
 class SOMA: public  EvolutionaryAlgorithm
 {
@@ -32,6 +33,9 @@ private:
 
 
 public:
+
+	static SOMA * getInstance( const Singleton & settings );
+
 	/**
 	 * constructor
 	 *

@@ -8,7 +8,8 @@
 #include "Singleton.h"
 
 Singleton::Singleton():
-	PROGRAM_SETTINGS_FILE_NAME("settings.ns")
+	PROGRAM_SETTINGS_FILE_NAME("settings.ns"),
+	MAIN_FOLDER_NAME(QString("data") + QDir::separator())
 {
 	weights = NULL;
 	layersSize = NULL;
@@ -39,6 +40,10 @@ int Singleton::getNrWeights()
 	return result;
 }
 
+int Singleton::getOutputLayerSize()
+{
+	return layersSize[nrOfLayers -1];
+}
 
 Singleton & dataSettings()
 {
@@ -96,7 +101,20 @@ void Singleton::setDeafultValues()
 
 	//weights
 //	isWeights = false;
-	weights = NULL;
 	weightsNumber = 0;
 }
 
+
+void Singleton::setWeights( const double * aWeights, int iSize )
+{
+	if ( weights != NULL )
+		delete weights;
+
+	weightsNumber = iSize;
+	weights = new double[iSize];
+
+	for (int i = 0; i < iSize; ++i)
+	{
+		weights[i] = aWeights[i];
+	}
+}

@@ -10,6 +10,7 @@
 
 #include "Neuron.h"
 
+
 class LinearNeuron: public Neuron
 {
 protected:

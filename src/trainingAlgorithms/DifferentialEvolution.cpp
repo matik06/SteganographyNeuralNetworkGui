@@ -6,6 +6,13 @@
 
 #include "DifferentialEvolution.h"
 
+DifferentialEvolution * DifferentialEvolution::getInstance(const Singleton & settings)
+{
+	return new DifferentialEvolution( settings.mutationConstant,
+			settings.crossover,
+			settings.popSizeDE,
+			settings.iterations);
+}
 
 DifferentialEvolution::DifferentialEvolution(double dMutationtConstant, double dCrossover,
 											 int iPopSize,int iIterNum):

@@ -21,12 +21,14 @@ protected:
 	QFile * _file;
 
 public:
-	ReadDataFile( QString path, QString fileName );
+	ReadDataFile( QString file );
 	virtual ~ReadDataFile();
 
 	int loadFileWithInputs(int iNrInput, int iNrOutput, double **& aInputs,
 			double **& aOutputs);
 	void loadSettingsFromFile( Singleton & settings, bool neuralNetworkWeights );
+
+	static bool isFileExist(QString file);
 
 protected:
 

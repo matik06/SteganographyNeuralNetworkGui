@@ -8,6 +8,15 @@
 #include "NeuralNetwork.h"
 
 
+NeuralNetwork * NeuralNetwork::getInstance(const Singleton & settings)
+{
+	return new NeuralNetwork(settings.nrOfLayers,
+			settings.layersSize,
+			settings.nrInputData,
+			settings.neuronType,
+			settings.alfa,
+			settings.beta);
+}
 
 NeuralNetwork::NeuralNetwork( int iNrLayers, int aLayersSize[],int iNrInputData,
 							  KindOfNeuron::Enum * neuronType, double aAlfa[], double aBeta[]):

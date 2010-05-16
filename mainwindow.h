@@ -41,8 +41,7 @@ public slots:
 private:
     Ui::MainWindowClass ui;
     void saveSettingsToFile(QString fileName, bool weights);
-    void readSettingsFromFile(QString fileName, bool weights);
-    void setDefaultValuesFroSingleton();
+    void readSettingsFromFile();
 
     QVBoxLayout * createButtonsLayout();
 

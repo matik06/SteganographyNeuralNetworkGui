@@ -9,6 +9,7 @@
 
 #include "EvolutionaryAlgorithm.h"
 #include "Population.h"
+#include "../Singleton.h"
 
 
 class DifferentialEvolution: public EvolutionaryAlgorithm
@@ -26,6 +27,10 @@ private:
 
 
 public:
+
+	static DifferentialEvolution * getInstance(const Singleton & settings);
+
+
 	/**
 	 * constructor
 	 *

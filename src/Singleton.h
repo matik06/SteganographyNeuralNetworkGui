@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include "EnumTypes.h"
 #include <QString>
+#include <QDir>
 
 
 class Singleton {
@@ -21,6 +22,8 @@ private:
 public:
 
 	const QString PROGRAM_SETTINGS_FILE_NAME;
+	const QString MAIN_FOLDER_NAME;
+
 
 	~Singleton();
 
@@ -55,7 +58,10 @@ public:
 	double * weights;
 
 	int getNrWeights();
+	int getOutputLayerSize();
+
 	void setDeafultValues();
+	void setWeights( const double * aWeights, int iSize);
 
 private:
 	Singleton();

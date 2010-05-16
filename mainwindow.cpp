@@ -4,14 +4,15 @@
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
+	neuralNetwork = NULL;
+	evolutionaryAlgorithm = NULL;
+
 	ui.setupUi(this);
-
-	WriteDataFile::createMainFolder();
-	readSettingsFromFile("asdf", false);
-
 	srand((int)time(NULL));
 
-	readSettingsFromFile(tr("settings.ns"), false);
+	WriteDataFile::createMainFolder();
+	readSettingsFromFile();
+	initializeNeuralNetworkObjects();
 
 	QVBoxLayout * vBox = createButtonsLayout();
 
@@ -27,9 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	setLayout(vBox);
 	setWindowTitle(tr("Recognition Tool"));
-
-	neuralNetwork = NULL;
-	evolutionaryAlgorithm = NULL;
 
 	setMaximumSize(300, 180);
 }
@@ -95,13 +93,9 @@ void MainWindow::settings()
 	networkSettings->show();
 	if(networkSettings->exec() == QDialog::Accepted)
 	{
+		//save settings to file
 		saveSettingsToFile(tr("settings.ns"), false);
-
-		if (neuralNetwork != NULL )
-			delete neuralNetwork;
-		if (evolutionaryAlgorithm != NULL)
-			delete evolutionaryAlgorithm;
-
+		//initializing neural network and evolutionary algorithm
 		initializeNeuralNetworkObjects();
 	}
 
@@ -124,47 +118,64 @@ void MainWindow::learning()
 		  QMessageBox::warning(this,tr("Learning Failed"),tr("Please choose pattern file before learning!!!"));
 		  return;
 	  }
+	  //tutaj powinno być sprawdzenie pliku (czy liczba danych zgadza się z ustawieniami sieci)
 	  else
 	  {
-		    int nrPatterns = _getNumberOfLines(fileName);
-			double **inputs = new double*[dataSettings().nrInputData];
-			double **patterns = new double*[dataSettings().layersSize[dataSettings().nrOfLayers] -1];
+		  ReadDataFile rdf = ReadDataFile( fileName );
 
-			for(int i = 0 ; i < nrPatterns;i++)
-			{
-				inputs[i] = new double[dataSettings().nrInputData];
-				patterns[i] = new double[dataSettings().layersSize[dataSettings().nrOfLayers-1]];
-			}
+		  double ** aInputs = NULL;
+		  double ** aOutputs = NULL;
 
-			if(_getPatternsFromFile(fileName,inputs,patterns))
-			{
-				initializeNeuralNetworkObjects();
-				neuralNetwork->setPatterns(patterns, nrPatterns);
+		  int iNrDataSets = rdf.loadFileWithInputs( dataSettings().nrInputData,
+				  dataSettings().getOutputLayerSize(), aInputs, aOutputs );
 
-				Individual ind ;
-				ind = evolutionaryAlgorithm->simulate(dataSettings().oType, *neuralNetwork, inputs);
-				neuralNetwork->setWeights(ind.getParam());
-				dataSettings().weightsNumber = _getWeightsNr();
-				dataSettings().weights = new double[dataSettings().weightsNumber];
+		  neuralNetwork->setPatterns( aOutputs, iNrDataSets );
 
+		  Individual ind = evolutionaryAlgorithm->simulate( dataSettings().oType,
+				  *neuralNetwork, aInputs);
 
-				for(int i=0;i<dataSettings().weightsNumber;i++)
-				{
-					dataSettings().weights[i] = ind.getParam()[i];
-				}
+		  neuralNetwork->setWeights( ind.getParam() );
 
-				LearningStacistics *s = new LearningStacistics();
-				s->showRessults(evolutionaryAlgorithm->getCostValueHistory());
-				learned = true;
-			}
-
-			for(int i = 0; i < nrPatterns; i++)
-			{
-				delete [] inputs[i];
-				delete [] patterns[i];
-			}
-			delete [] inputs;
-			delete [] patterns;
+//		    int nrPatterns = _getNumberOfLines(fileName);
+//			double **inputs = new double*[dataSettings().nrInputData];
+//			double **patterns = new double*[dataSettings().layersSize[dataSettings().nrOfLayers] -1];
+//
+//			for(int i = 0 ; i < nrPatterns;i++)
+//			{
+//				inputs[i] = new double[dataSettings().nrInputData];
+//				patterns[i] = new double[dataSettings().layersSize[dataSettings().nrOfLayers-1]];
+//			}
+//
+//			if(_getPatternsFromFile(fileName,inputs,patterns))
+//			{
+//				initializeNeuralNetworkObjects();
+//				neuralNetwork->setPatterns(patterns, nrPatterns);
+//
+//				Individual ind ;
+//				ind = evolutionaryAlgorithm->simulate(dataSettings().oType, *neuralNetwork, inputs);
+//				neuralNetwork->setWeights(ind.getParam());
+//
+//				dataSettings().weightsNumber = _getWeightsNr();
+//				dataSettings().weights = new double[dataSettings().weightsNumber];
+//
+//
+//				for(int i=0;i<dataSettings().weightsNumber;i++)
+//				{
+//					dataSettings().weights[i] = ind.getParam()[i];
+//				}
+//
+//				LearningStacistics *s = new LearningStacistics();
+//				s->showRessults(evolutionaryAlgorithm->getCostValueHistory());
+//				learned = true;
+//			}
+//
+//			for(int i = 0; i < nrPatterns; i++)
+//			{
+//				delete [] inputs[i];
+//				delete [] patterns[i];
+//			}
+//			delete [] inputs;
+//			delete [] patterns;
 	  }
 
 }
@@ -258,7 +269,8 @@ void MainWindow::importSettings()
 	  }
 	  else
 	  {
-		  readSettingsFromFile(fileName, true);
+		  ReadDataFile rdf = ReadDataFile(fileName);
+		  rdf.loadSettingsFromFile(dataSettings(), true);
 		  learned = true;
 	  }
 }
@@ -715,49 +727,73 @@ void MainWindow::saveSettingsToFile(QString fileName, bool weights)
 	wdf.saveSettingsToFile( dataSettings(), false);
 }
 
-// w zasadzie to można usunąć tą metodę
+
 //ustawić zmienne globalne dotyczące ścieżek i nazw plików!!!!!!!!!!!!
-void MainWindow::readSettingsFromFile(QString fileName, bool weights)
+void MainWindow::readSettingsFromFile()
 {
-	ReadDataFile rdf = ReadDataFile(QString("data") + QDir::separator(),
-			dataSettings().PROGRAM_SETTINGS_FILE_NAME);
-
-	rdf.loadSettingsFromFile(dataSettings(), false);
-}
-
-void MainWindow::setDefaultValuesFroSingleton()
-{
-	dataSettings().setDeafultValues();
-}
-
-void MainWindow::initializeNeuralNetworkObjects()
-{
-	neuralNetwork =  new NeuralNetwork(dataSettings().nrOfLayers,
-										dataSettings().layersSize,
-										dataSettings().nrInputData,
-										dataSettings().neuronType,
-										dataSettings().alfa,
-										dataSettings().beta);
-
-	if(dataSettings().EvolAlgorithm == EvolAlgorithm::DE)
+	if ( ReadDataFile::isFileExist(dataSettings().MAIN_FOLDER_NAME +
+			dataSettings().PROGRAM_SETTINGS_FILE_NAME ))
 	{
-		evolutionaryAlgorithm = new DifferentialEvolution(dataSettings().mutationConstant,
-															 dataSettings().crossover,
-															 dataSettings().popSizeDE,
-															 dataSettings().iterations);
+		ReadDataFile rdf = ReadDataFile(dataSettings().MAIN_FOLDER_NAME +
+				dataSettings().PROGRAM_SETTINGS_FILE_NAME);
+
+		rdf.loadSettingsFromFile(dataSettings(), false);
 	}
 	else
 	{
-		evolutionaryAlgorithm = new SOMA(dataSettings().step,
-										dataSettings().pathLength,
-										dataSettings().PRT,
-										dataSettings().accError,
-										dataSettings().migrations,
-										dataSettings().popSizeSoma);
+		dataSettings().setDeafultValues();
+	}
+}
+
+
+void MainWindow::initializeNeuralNetworkObjects()
+{
+	if ( neuralNetwork != NULL )
+		delete neuralNetwork;
+
+	if ( evolutionaryAlgorithm != NULL )
+		delete evolutionaryAlgorithm;
+
+	neuralNetwork = NeuralNetwork::getInstance( dataSettings() );
+
+	if ( dataSettings().EvolAlgorithm == EvolAlgorithm::DE )
+	{
+		evolutionaryAlgorithm = DifferentialEvolution::getInstance( dataSettings() );
+	}
+	else if ( dataSettings().EvolAlgorithm == EvolAlgorithm::SOMA )
+	{
+		evolutionaryAlgorithm = SOMA::getInstance( dataSettings() );
 	}
 
-	Individual::setBegin(0);
-	Individual::setEnd(1);
+	Individual::setBegin(0.0);
+	Individual::setEnd(0.0);
+
+//	neuralNetwork =  new NeuralNetwork(dataSettings().nrOfLayers,
+//										dataSettings().layersSize,
+//										dataSettings().nrInputData,
+//										dataSettings().neuronType,
+//										dataSettings().alfa,
+//										dataSettings().beta);
+//
+//	if(dataSettings().EvolAlgorithm == EvolAlgorithm::DE)
+//	{
+//		evolutionaryAlgorithm = new DifferentialEvolution(dataSettings().mutationConstant,
+//															 dataSettings().crossover,
+//															 dataSettings().popSizeDE,
+//															 dataSettings().iterations);
+//	}
+//	else
+//	{
+//		evolutionaryAlgorithm = new SOMA(dataSettings().step,
+//										dataSettings().pathLength,
+//										dataSettings().PRT,
+//										dataSettings().accError,
+//										dataSettings().migrations,
+//										dataSettings().popSizeSoma);
+//	}
+//
+//	Individual::setBegin(0);
+//	Individual::setEnd(1);
 }
 
 QString MainWindow::doubletostring(double tab[], int size)

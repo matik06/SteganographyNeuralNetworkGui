@@ -12,6 +12,7 @@
 #include "../trainingAlgorithms/Individual.h"
 #include "Layer.h"
 #include "../EnumTypes.h"
+#include "../Singleton.h"
 
 
 class NeuralNetwork
@@ -32,6 +33,8 @@ protected:
 	int _iNrPaterns;
 
 public:
+
+	static NeuralNetwork * getInstance(const Singleton & settings);
 
 	/**
 	 * Constructor - neural network defined by parameters:

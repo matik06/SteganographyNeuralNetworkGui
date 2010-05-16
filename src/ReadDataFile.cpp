@@ -11,11 +11,11 @@
 						constructors and destructors
  *****************************************************************************/
 
-ReadDataFile::ReadDataFile( QString path, QString fileName )
+ReadDataFile::ReadDataFile( QString file )
 {
-	if ( QFile::exists( path + fileName ) ) {
+	if ( QFile::exists( file ) ) {
 
-		_file = new QFile( path + fileName );
+		_file = new QFile( file );
 		_file->open( QIODevice::ReadOnly );
 
 	} else {
@@ -121,9 +121,23 @@ void ReadDataFile::loadSettingsFromFile( Singleton & settings, bool neuralNetwor
 	{
 		loadArray( ds, settings.weights, settings.getNrWeights() );
 		settings.weightsNumber = settings.getNrWeights();
-	} else
+	}
+	else
+	{
 		settings.weightsNumber =0;
 
+		if ( settings.weights != NULL )
+		{
+			settings.weights = NULL;
+		}
+	}
+
+}
+
+
+bool ReadDataFile::isFileExist(QString file)
+{
+	return QFile::exists(file);
 }
 
 
