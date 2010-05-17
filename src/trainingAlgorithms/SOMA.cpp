@@ -8,13 +8,14 @@
 
 SOMA * SOMA::getInstance( const Singleton & settings )
 {
-	return new SOMA(settings.step,
-			settings.pathLength,
-			settings.PRT,
-			settings.accError,
-			settings.migrations,
-			settings.popSizeSoma);
+       return new SOMA(settings.step,
+                       settings.pathLength,
+                       settings.PRT,
+                       settings.accError,
+                       settings.migrations,
+                       settings.popSizeSoma);
 }
+
 
 SOMA::SOMA(double dStep,double dPathLength, double dPRT, double dAccError,
 		   int iMigration,int iPopSize ):

@@ -8,9 +8,9 @@
 #include "Individual.h"
 
 
-int Individual::_iDimensions = 0;
+int Individual::_iDimensions =0;
 double Individual::_dBegin = 0;
-double Individual::_dEnd = 0;
+double Individual::_dEnd = 1;
 
 Individual::Individual() {
 
@@ -166,4 +166,5 @@ Individual& Individual::operator=(const Individual& other)
 	this->_dCostValue = other._dCostValue;
     return *this;
 }
+
 

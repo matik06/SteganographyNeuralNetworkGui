@@ -6,13 +6,13 @@
 
 #include "DifferentialEvolution.h"
 
-DifferentialEvolution * DifferentialEvolution::getInstance(const Singleton & settings)
-{
-	return new DifferentialEvolution( settings.mutationConstant,
-			settings.crossover,
-			settings.popSizeDE,
-			settings.iterations);
-}
+	DifferentialEvolution * DifferentialEvolution::getInstance(const Singleton & settings)
+	{
+	       return new DifferentialEvolution( settings.mutationConstant,
+	                       settings.crossover,
+	                       settings.popSizeDE,
+	                       settings.iterations);
+	}
 
 DifferentialEvolution::DifferentialEvolution(double dMutationtConstant, double dCrossover,
 											 int iPopSize,int iIterNum):
@@ -122,15 +122,14 @@ void DifferentialEvolution::_activeIndividualLoop(int iActiveIndividualIndex,
 	Individual activeInd = this->_population[iActiveIndividualIndex];
     Individual tmpNewInd = _crossover(activeInd,tmpInd);
 
-
     for(int i=0; i< this->_iPopSize;i++)
-	{
-    		this->_setCV(_population[i],network,dInputData);
-    }
+     {
+     	this->_setCV(_population[i],network,dInputData);
+     }
 
-//    //set cost value for activeInd individual
+    //set cost value for activeInd individual
 //    this->_setCV( activeInd, network, dInputData );
-//    //set cost value for tmpNewId individual
+    //set cost value for tmpNewId individual
     this->_setCV( tmpNewInd, network, dInputData );
 
 	if((_oType == OptymalizationType::MAXIMUM && activeInd<tmpNewInd)||
@@ -152,4 +151,5 @@ void DifferentialEvolution::_mixIndex(int source[])
 		source[tmpIndex]= tmp;
 	}
 }
+
 
