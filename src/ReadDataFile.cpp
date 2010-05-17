@@ -154,6 +154,7 @@ void ReadDataFile::readData( QTextStream & ts, double * aData, int iDataSize )
 	for (int i = 0; i < iDataSize - 1; ++i)
 	{
 		ts >> aData[i];		//reading single number from set
+		int wynik = aData[i];
 		readChar( ts, ',' );
 	}
 

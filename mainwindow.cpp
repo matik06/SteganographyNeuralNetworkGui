@@ -110,9 +110,9 @@ void MainWindow::about()
 
 void MainWindow::learning()
 {
-	 QString fileName = QFileDialog::getOpenFileName(this,
-	        tr("Open File with Patterns"), "",
-	        tr("txt file (*.txt);;All Files (*)"));
+	QString fileName = QFileDialog::getOpenFileName(this,
+			tr("Open File with Patterns"), "",
+			tr("txt file (*.txt);;All Files (*)"));
 	  if (fileName.isEmpty())
 	  {
 		  QMessageBox::warning(this,tr("Learning Failed"),tr("Please choose pattern file before learning!!!"));
@@ -122,10 +122,10 @@ void MainWindow::learning()
 	  else
 	  {
 		  ReadDataFile rdf = ReadDataFile( fileName );
-
 		  double ** aInputs = NULL;
 		  double ** aOutputs = NULL;
 
+		  //initializing arrays with data from file
 		  int iNrDataSets = rdf.loadFileWithInputs( dataSettings().nrInputData,
 				  dataSettings().getOutputLayerSize(), aInputs, aOutputs );
 
@@ -136,6 +136,23 @@ void MainWindow::learning()
 
 		  neuralNetwork->setWeights( ind.getParam() );
 
+		  int iNrWeights = dataSettings().getNrWeights();
+		  dataSettings().setWeights( ind.getParam(), iNrWeights );
+
+		  LearningStacistics *s = new LearningStacistics();
+		  s->showRessults( evolutionaryAlgorithm->getCostValueHistory() );
+
+		  learned = true;
+
+		  //deleting arrays
+			for(int i = 0; i < iNrDataSets; i++)
+			{
+				delete [] aInputs[i];
+				delete [] aOutputs[i];
+			}
+			delete [] aInputs;
+			delete [] aOutputs;
+	  }
 //		    int nrPatterns = _getNumberOfLines(fileName);
 //			double **inputs = new double*[dataSettings().nrInputData];
 //			double **patterns = new double*[dataSettings().layersSize[dataSettings().nrOfLayers] -1];
@@ -145,16 +162,25 @@ void MainWindow::learning()
 //				inputs[i] = new double[dataSettings().nrInputData];
 //				patterns[i] = new double[dataSettings().layersSize[dataSettings().nrOfLayers-1]];
 //			}
-//
+
 //			if(_getPatternsFromFile(fileName,inputs,patterns))
 //			{
+//
+//				 ReadDataFile rdf = ReadDataFile( fileName );
+//						  double ** inputs = NULL;
+//						  double ** patterns = NULL;
+//
+//						  //initializing arrays with data from file
+//						  int nrPatterns = rdf.loadFileWithInputs( dataSettings().nrInputData,
+//								  dataSettings().getOutputLayerSize(), inputs, patterns );
+//
 //				initializeNeuralNetworkObjects();
 //				neuralNetwork->setPatterns(patterns, nrPatterns);
 //
 //				Individual ind ;
 //				ind = evolutionaryAlgorithm->simulate(dataSettings().oType, *neuralNetwork, inputs);
 //				neuralNetwork->setWeights(ind.getParam());
-//
+
 //				dataSettings().weightsNumber = _getWeightsNr();
 //				dataSettings().weights = new double[dataSettings().weightsNumber];
 //
@@ -163,12 +189,12 @@ void MainWindow::learning()
 //				{
 //					dataSettings().weights[i] = ind.getParam()[i];
 //				}
-//
+
 //				LearningStacistics *s = new LearningStacistics();
 //				s->showRessults(evolutionaryAlgorithm->getCostValueHistory());
 //				learned = true;
 //			}
-//
+
 //			for(int i = 0; i < nrPatterns; i++)
 //			{
 //				delete [] inputs[i];
@@ -176,7 +202,7 @@ void MainWindow::learning()
 //			}
 //			delete [] inputs;
 //			delete [] patterns;
-	  }
+//	  }
 
 }
 
@@ -756,6 +782,9 @@ void MainWindow::initializeNeuralNetworkObjects()
 
 	neuralNetwork = NeuralNetwork::getInstance( dataSettings() );
 
+	Individual::setBegin(0);
+	Individual::setEnd(1);
+
 	if ( dataSettings().EvolAlgorithm == EvolAlgorithm::DE )
 	{
 		evolutionaryAlgorithm = DifferentialEvolution::getInstance( dataSettings() );
@@ -765,8 +794,7 @@ void MainWindow::initializeNeuralNetworkObjects()
 		evolutionaryAlgorithm = SOMA::getInstance( dataSettings() );
 	}
 
-	Individual::setBegin(0.0);
-	Individual::setEnd(0.0);
+
 
 //	neuralNetwork =  new NeuralNetwork(dataSettings().nrOfLayers,
 //										dataSettings().layersSize,

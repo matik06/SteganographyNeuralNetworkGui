@@ -8,7 +8,7 @@
 #include "Individual.h"
 
 
-int Individual::_iDimensions =0;
+int Individual::_iDimensions = 0;
 double Individual::_dBegin = 0;
 double Individual::_dEnd = 0;
 

@@ -97,6 +97,7 @@ void NeuralNetwork::setWeights( double aWeights[] )
 			{
 				// this means the same (*this->_aLayers[i])[j][k] = aWeights[n]; than:
 				this->operator [](i)[j][k] = aWeights[n];
+				double d = aWeights[n];
 				n++;
 			}
 		}
@@ -170,6 +171,8 @@ void NeuralNetwork::setPatterns( double ** aPatterns, int nrPatterns )
 		}
 		delete [] _aPatterns;
 	}
+
+	_iNrPaterns = nrPatterns;
 
 	//creating and initializing array with patterns
 	this->_aPatterns = new double*[nrPatterns];
