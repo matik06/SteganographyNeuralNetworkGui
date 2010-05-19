@@ -52,4 +52,3 @@ double * EvolutionaryAlgorithm::getCostValueHistory()
 {
 	return _costValueHistory;
 }
-

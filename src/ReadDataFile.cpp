@@ -113,9 +113,6 @@ void ReadDataFile::loadSettingsFromFile( Singleton & settings, bool neuralNetwor
 	ds >> settings.iterations;
 	ds >> settings.popSizeDE;
 
-//	bool isWeights;
-//	ds >> settings.isWeights;
-
 	//loading neural network weights
 	if ( neuralNetworkWeights )
 	{
@@ -124,7 +121,7 @@ void ReadDataFile::loadSettingsFromFile( Singleton & settings, bool neuralNetwor
 	}
 	else
 	{
-		settings.weightsNumber =0;
+		settings.weightsNumber = 0;
 
 		if ( settings.weights != NULL )
 		{

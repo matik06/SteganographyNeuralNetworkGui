@@ -97,7 +97,6 @@ void NeuralNetwork::setWeights( double aWeights[] )
 			{
 				// this means the same (*this->_aLayers[i])[j][k] = aWeights[n]; than:
 				this->operator [](i)[j][k] = aWeights[n];
-				double d = aWeights[n];
 				n++;
 			}
 		}
@@ -227,5 +226,6 @@ double * NeuralNetwork::getWeights()
 	//i am lazy today
 	//i have to finish it later
 	//actually i don't need this method
+	return NULL;
 }
 

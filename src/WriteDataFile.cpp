@@ -128,6 +128,29 @@ void WriteDataFile::saveSettingsToFile( Singleton & settings, bool neuralNetwork
 }
 
 
+void WriteDataFile::saveRecognitionStatistics( double ** aData, int iNrData,
+		int correct, int incorrect)
+{
+	QTextStream ts(_file);
+
+	ts << "incorrect sets: " << incorrect << "\n";
+	ts << " correct sets: " << correct << "\n\n";
+
+	ts << "{";
+	for (int i = 0; i < correct; ++i)
+	{
+		ts << "{";
+		for (int j = 0; j < iNrData; ++j) {
+			ts << aData[i][j];
+			writeComa(ts, j, iNrData);
+		}
+		ts << "}";
+		writeComa(ts, i, correct);
+	}
+	ts << "}";
+}
+
+
 /******************************************************************************
 			 					private methods
  *****************************************************************************/

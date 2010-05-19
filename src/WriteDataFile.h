@@ -40,6 +40,9 @@ public:
 
 	void saveSettingsToFile( Singleton & settings, bool neuralNetworkWeights );
 
+	void saveRecognitionStatistics( double ** aData, int iNrData, int correct,
+			int incorrect);
+
 protected:
 
 	void writeComa(QTextStream & ts, int index, int max);
