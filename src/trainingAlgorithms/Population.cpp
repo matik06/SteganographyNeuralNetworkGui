@@ -11,6 +11,11 @@ Population::Population(int iPopSize)
 {
 	this->_iPopSize = iPopSize;
 	this->_Individuals = new Individual[iPopSize];
+
+	for (int i = 0; i < iPopSize; ++i)
+	{
+		_Individuals[i] = new Individual();
+	}
 }
 
 Population::Population(const Population & other)
@@ -33,31 +38,36 @@ Individual& Population::operator[](int iIndex)
 	return this->_Individuals[iIndex];
 }
 
-Population& Population::operator =(const Population & other)
+Population & Population::operator=(const Population & other)
 {
-	delete[] this->_Individuals;
-	this->_Individuals = new Individual[_iPopSize];
-
-	for(int i =0; i<_iPopSize; i++)
+	if ( this->_iPopSize != other._iPopSize )
 	{
-		this->_Individuals[i] = other._Individuals[i];
+		Population * pop = NULL;
+		return *pop;
 	}
-	return *this;
+	else
+	{
+		for(int i =0; i<_iPopSize; i++)
+		{
+			this->_Individuals[i] = other._Individuals[i];
+		}
+		return *this;
+	}
 }
 
-Individual Population::getBestIndividual(OptymalizationType::Enum oType)
+Individual & Population::getBestIndividual( const OptymalizationType::Enum & oType )
 {
       int iIndex = getBestIndividualIndex(oType);
-      return this-> _Individuals[iIndex];
+      return this->_Individuals[iIndex];
 }
 
-Individual Population::getWorstIndividual(OptymalizationType::Enum oType)
+Individual & Population::getWorstIndividual( const OptymalizationType::Enum & oType )
 {
       int iIndex = getWorstIndividualIndex(oType);
-      return this-> _Individuals[iIndex];
+      return this->_Individuals[iIndex];
 }
 
-int Population::getBestIndividualIndex(OptymalizationType::Enum oType)
+int Population::getBestIndividualIndex( const OptymalizationType::Enum & oType )
 {
 	switch(oType)
 	{
@@ -69,7 +79,7 @@ int Population::getBestIndividualIndex(OptymalizationType::Enum oType)
 	}
 	return -1;
 }
-int Population::getWorstIndividualIndex(OptymalizationType::Enum oType)
+int Population::getWorstIndividualIndex( const OptymalizationType::Enum & oType )
 {
 	switch(oType)
 		{
@@ -107,34 +117,57 @@ void Population::popPrint()
 
 int Population::_findMinIndividual()
 {
-	int iBestIndex=0;
-	Individual BestIndividual = this-> _Individuals[0];
+	int iBestIndex = 0;
+//	Individual BestIndividual = this-> _Individuals[0];
+//
+//	for(int i=1 ; i<_iPopSize ; i++)
+//	{
+//		if(BestIndividual > this-> _Individuals[i])
+//		{
+//			BestIndividual = this-> _Individuals[i];
+//			iBestIndex = i;
+//		}
+//	}
 
-	for(int i=1 ; i<_iPopSize ; i++)
+	int cv = this->_Individuals[0].getCostValue();
+
+	for (int i = 1; i < _iPopSize; ++i)
 	{
-		if(BestIndividual>this-> _Individuals[i])
+		if ( cv > _Individuals[i].getCostValue() )
 		{
-			BestIndividual =this-> _Individuals[i];
+			cv = _Individuals[i].getCostValue();
 			iBestIndex = i;
 		}
-		else{}
 	}
+
 	return iBestIndex;
 }
 
 int Population::_findMaxIndividual()
 {
 	int iBestIndex=0;
-	Individual BestIndividual = this-> _Individuals[0];
+//	Individual BestIndividual = this-> _Individuals[0];
+//
+//	for(int i=1 ; i<this->_iPopSize ; i++)
+//	{
+//		if(BestIndividual < this-> _Individuals[i])
+//		{
+//			BestIndividual =this-> _Individuals[i];
+//			iBestIndex = i;
+//		}
+//	}
 
-	for(int i=1 ; i<this->_iPopSize ; i++)
+	int cv = this->_Individuals[0].getCostValue();
+
+	for (int i = 1; i < _iPopSize; ++i)
 	{
-		if(BestIndividual < this-> _Individuals[i])
+		if ( cv < _Individuals[i].getCostValue() )
 		{
-			BestIndividual =this-> _Individuals[i];
+			cv = _Individuals[i].getCostValue();
 			iBestIndex = i;
 		}
 	}
+
 	return iBestIndex;
 }
 

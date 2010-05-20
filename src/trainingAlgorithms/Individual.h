@@ -7,10 +7,10 @@
 #ifndef INDIVIDUAL_H_
 #define INDIVIDUAL_H_
 
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 #include <iostream>
-#include <ctime>
+//#include <ctime>
 
 #include "../neuralNetwork/NeuralNetwork.h"
 
@@ -108,6 +108,7 @@ public:
     */
     static void setEnd(double dEnd);
 
+    //dopisać += oraz -= ponieważ są o wiele szybsze
 
     /**
     * operator + for individual
@@ -115,7 +116,16 @@ public:
     *@param const Individual & other - other individual to add
     *@return Individual& - new individual .
     */
-    Individual  operator+(const Individual & other);
+    Individual & operator+(const Individual & other);
+
+
+    /**
+    * operator += for individual
+    *
+    *@param const Individual & other - other individual to add
+    *@return Individual& - modified individual
+    */
+    Individual & operator+=(const Individual & other);
 
     /**
     * operator - for individual
@@ -123,7 +133,15 @@ public:
     *@param const Individual & other - other individual to subtraction
     *@return Individual& -new individual .
     */
-    Individual  operator-(const Individual & other);
+    Individual & operator-(const Individual & other);
+
+    /**
+	* operator -= for individual
+	*
+	*@param const Individual & other - other individual to subtraction
+	*@return Individual& - modified individual
+	*/
+	Individual & operator-=(const Individual & other);
 
     /**
     * operator *= for individual
@@ -131,7 +149,7 @@ public:
     *@param double value - value to multiply with all parameters of individual
     *@return Individual -new individual .
     */
-    Individual operator*=(double dValue);
+    Individual & operator*=(double dValue);
 
     /**
      * assignment operator for individual

@@ -7,8 +7,7 @@
 
 #include "Individual.h"
 
-
-int Individual::_iDimensions =0;
+int Individual::_iDimensions = 0;
 double Individual::_dBegin = 0;
 double Individual::_dEnd = 1;
 
@@ -26,9 +25,9 @@ Individual::Individual() {
 
 Individual::Individual(const Individual & other)
 {
-	this->_aParam = new double [this->_iDimensions];
+	this->_aParam = new double [other._iDimensions];
 
-	for(int i =0; i < this->_iDimensions; i++)
+	for(int i =0; i < other._iDimensions; i++)
 	{
 		this->_aParam[i] = other._aParam[i];
 	}
@@ -47,22 +46,22 @@ int Individual::getDimensions()
 
 void Individual::setDimensions(int iDimensions)
 {
-	_iDimensions = iDimensions;
+	Individual::_iDimensions = iDimensions;
 }
 
 void Individual::setBegin(double dBegin)
 {
-	_dBegin = dBegin;
+	Individual::_dBegin = dBegin;
 }
 
 void Individual::setEnd(double dEnd)
 {
-	_dEnd = dEnd;
+	Individual::_dEnd = dEnd;
 }
 
 void Individual::setParam(double aParam[])
 {
-	for(int i=0; i<_iDimensions; i++)
+	for(int i=0; i<Individual::_iDimensions; i++)
 	{
 		this->_aParam[i] = aParam[i];
 	}
@@ -73,36 +72,58 @@ double* Individual::getParam()
 	return this->_aParam;
 }
 
-Individual  Individual::operator +(const Individual & other)
+Individual & Individual::operator +(const Individual & other)
 {
-	Individual tmp ;
+	Individual * tmp = new Individual;
 
-	for(int i=0; i<_iDimensions; i++)
+	for(int i=0; i<Individual::_iDimensions; i++)
 	{
-		tmp._aParam[i] =this->_aParam[i]+ other._aParam[i];
+		tmp->_aParam[i] =this->_aParam[i] + other._aParam[i];
 	}
-	return tmp;
+
+	return *tmp;
 }
 
-
-Individual  Individual::operator -(const Individual & other)
+Individual & Individual::operator+=(const Individual & other)
 {
-	Individual tmp;
 
-	for(int i=0; i<_iDimensions; i++)
+	for(int i=0; i<Individual::_iDimensions; i++)
 	{
-		tmp._aParam[i]=this->_aParam[i]-= other._aParam[i];
+		this->_aParam[i] += other._aParam[i];
 	}
-	return tmp;
+
+	return *this;
 }
 
-
-Individual Individual::operator *=(double dValue)
+Individual & Individual::operator -(const Individual & other)
 {
-	for(int i=0; i<_iDimensions; i++)
+	Individual * tmp = new Individual;
+
+	for(int i=0; i<Individual::_iDimensions; i++)
 	{
-		this->_aParam[i]*= dValue;
+		tmp->_aParam[i] = this->_aParam[i] - other._aParam[i];
 	}
+	return *tmp;
+}
+
+Individual & Individual::operator-=(const Individual & other)
+{
+
+	for(int i=0; i<Individual::_iDimensions; i++)
+	{
+		this->_aParam[i] -= other._aParam[i];
+	}
+
+	return *this;
+}
+
+Individual & Individual::operator *=(double dValue)
+{
+	for(int i=0; i<Individual::_iDimensions; i++)
+	{
+		this->_aParam[i] *= dValue;
+	}
+
 	return *this;
 }
 
@@ -164,6 +185,7 @@ Individual& Individual::operator=(const Individual& other)
 		this->_aParam[i] = other._aParam[i];
 	}
 	this->_dCostValue = other._dCostValue;
+
     return *this;
 }
 

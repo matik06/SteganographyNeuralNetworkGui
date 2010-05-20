@@ -14,7 +14,6 @@ class QPushButton;
 #include "learningstacistics.h"
 #include "src/trainingAlgorithms/Individual.h"
 
-#include "src/FileManager.h"
 #include "src/ReadDataFile.h"
 #include "src/WriteDataFile.h"
 #include <sstream>

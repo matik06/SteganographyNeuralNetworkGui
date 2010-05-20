@@ -10,6 +10,7 @@
 
 #include "Individual.h"
 #include "../EnumTypes.h"
+#include <cstdlib>
 
 class Population {
 private:
@@ -52,35 +53,35 @@ public:
      *@param Population& other - other population which values are assign to current population
      *@return Population& -current population .
      */
-    Population& operator=(const Population & other);
+    Population & operator=(const Population & other);
 
     /**
      * choose the best individual in population.
      *
      *@return Individual - The best individual;
     */
-    Individual getBestIndividual(OptymalizationType::Enum oType);
+    Individual & getBestIndividual(const OptymalizationType::Enum & oType);
 
     /**
      * choose the best individual in population.
      *
      *@return int - The best individual's index;
     */
-    int getBestIndividualIndex(OptymalizationType::Enum oType);
+    int getBestIndividualIndex(const OptymalizationType::Enum & oType);
 
     /**
      * choose the worst individual in population.
      *
      *@return Individual - The worst individual;
     */
-    Individual getWorstIndividual(OptymalizationType::Enum oType);
+    Individual & getWorstIndividual(const OptymalizationType::Enum & oType);
 
     /**
      * choose the worst individual in population.
      *
      *@return int - The worst individual's index;
     */
-    int getWorstIndividualIndex(OptymalizationType::Enum oType);
+    int getWorstIndividualIndex(const OptymalizationType::Enum & oType);
 
 
     /**

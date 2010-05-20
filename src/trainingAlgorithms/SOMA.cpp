@@ -21,7 +21,7 @@ SOMA::SOMA(double dStep,double dPathLength, double dPRT, double dAccError,
 		   int iMigration,int iPopSize ):
 	EvolutionaryAlgorithm(iPopSize, iMigration)
 {
-	this->_dStep =dStep;
+	this->_dStep = dStep;
 	this->_dPathLength = dPathLength;
 	this->_dAccError =dAccError;
 	this->_iMigration = iMigration;
@@ -36,6 +36,7 @@ SOMA::SOMA(const SOMA& other):
 	this->_dAccError =other._dAccError;
 	this->_iMigration = other._iMigration;
 	this->_dPRT = other._dPRT;
+	_population = other._population;
 }
 
 SOMA::~SOMA()
@@ -81,15 +82,19 @@ Individual SOMA::simulate( OptymalizationType::Enum oType, NeuralNetwork & netwo
 	double dDiff;
 
 	this->_oType = oType;
+
+	//powinien być ustawiany cost value dla wszystkich individuali ale dla poszczególnego zestawy danych......
 	//set cost values for all individuals in population
 	this->_setCV( this->_population, network, dInputData );
 
 	for(int i=0; i < _iMigration ; i++)
 	{
+		//kaj kurwa druga pętla dla poszczególnych zestawów danych.......................
 		dBestCV = this->_population.getBestIndividual(this->_oType).getCostValue();
 		dWorstCV = this->_population.getWorstIndividual(this->_oType).getCostValue();
 		dDiff = fabs(dBestCV - dWorstCV);
 
+//		if ( _dAccError != -1)
 		if(dDiff > _dAccError)
 		{
 			_MigrationLoop(network, dInputData);

@@ -48,7 +48,7 @@ public:
      * get population in algorythm
      * return Population - popularion in Algorythm
      */
-	Population getPopulation();	//dlaczego nie zwrocic referencji to populacji!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	Population & getPopulation();
 
 	double * getCostValueHistory();
 
@@ -70,7 +70,7 @@ protected:
 	 *
 	 * @return void
 	 */
-	void _setCV( Individual & individual, NeuralNetwork & network, double ** dInputData );
+	Individual &  _setCV( Individual & individual, NeuralNetwork & network, double ** dInputData );
 
 	/**
 	 * set cost value for all individuals in neural network
@@ -81,7 +81,7 @@ protected:
 	 *
 	 * @return void
 	 */
-	void _setCV( Population & population, NeuralNetwork & network, double ** dInputData );
+	Population & _setCV( Population & population, NeuralNetwork & network, double ** dInputData );
 
 };
 

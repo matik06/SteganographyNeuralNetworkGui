@@ -15,23 +15,25 @@ EvolutionaryAlgorithm::EvolutionaryAlgorithm(int iPopSize, int iterations):
 
 
 EvolutionaryAlgorithm::~EvolutionaryAlgorithm() {
-	// TODO Auto-generated destructor stub
+	delete _costValueHistory;
 }
 
-Population EvolutionaryAlgorithm::getPopulation()
+Population & EvolutionaryAlgorithm::getPopulation()
 {
 	return this->_population;
 }
 
 
-void EvolutionaryAlgorithm::_setCV( Individual & individual, NeuralNetwork & network, double ** dInputData )
+Individual & EvolutionaryAlgorithm::_setCV( Individual & individual, NeuralNetwork & network, double ** dInputData )
 {
 	double  dCV = network.getCostValue( individual.getParam(), dInputData);
 	individual.setCostValue( dCV );
+
+	return individual;
 }
 
 
-void EvolutionaryAlgorithm::_setCV( Population & population, NeuralNetwork & network, double ** dInputData )
+Population & EvolutionaryAlgorithm::_setCV( Population & population, NeuralNetwork & network, double ** dInputData )
 {
 	int iPopulationSize = population.getPopSize();
 	double dCV;
@@ -41,6 +43,8 @@ void EvolutionaryAlgorithm::_setCV( Population & population, NeuralNetwork & net
 		dCV = network.getCostValue( population[i].getParam(), dInputData );
 		population[i].setCostValue( dCV );
 	}
+
+	return population;
 }
 
 double EvolutionaryAlgorithm::_rand0to1()
