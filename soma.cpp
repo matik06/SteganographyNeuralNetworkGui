@@ -62,6 +62,9 @@ QVBoxLayout * Soma::createSomaBoxLayout()
 	accErrorLine->setValidator( validatorAccError );
 	accErrorLine->setEnabled(false);
 
+	accErrorLine->setVisible(false);
+	accErrorCheckBox->setVisible(false);
+
 	QLabel * MigrationsLabel = new QLabel(tr("Migrations"));
 	migrationsLine = new QLineEdit();
 	migrationsLine->setValidator( validator1to9999 );

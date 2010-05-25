@@ -42,7 +42,7 @@ public:
 	 * @return: Individual
 	 */
 	virtual Individual simulate(OptymalizationType::Enum oType, NeuralNetwork & network,
-								double ** dInputData) = 0;
+			double ** dInputData, double ** dOutputData, int iNrDataSet ) = 0;
 
     /**
      * get population in algorythm
@@ -51,6 +51,8 @@ public:
 	Population & getPopulation();
 
 	double * getCostValueHistory();
+
+	void resetPopulation();
 
 protected:
 
@@ -70,7 +72,8 @@ protected:
 	 *
 	 * @return void
 	 */
-	Individual &  _setCV( Individual & individual, NeuralNetwork & network, double ** dInputData );
+	Individual &  _setCV( Individual & individual, NeuralNetwork & network,
+			double * dInputData, double * dOutputData );
 
 	/**
 	 * set cost value for all individuals in neural network
@@ -81,7 +84,10 @@ protected:
 	 *
 	 * @return void
 	 */
-	Population & _setCV( Population & population, NeuralNetwork & network, double ** dInputData );
+	Population & _setCV( Population & population, NeuralNetwork & network,
+			double * dInputData, double * dOutputData );
+
+	void _resetCostValueHistory( int iNrIterations );
 
 };
 

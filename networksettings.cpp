@@ -17,7 +17,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 	QGridLayout * mainLayout = new QGridLayout();
 	mainLayout->addWidget(createLayersDetailsGroup(), 0, 0);
 	mainLayout->addWidget(createLearningAlgorithmDetailsGroup(), 2, 0);
-	mainLayout->addWidget(save, 3, 0);
+	mainLayout->addWidget(createOtherDetailsGroup(), 3, 0);
+	mainLayout->addWidget(save, 4, 0);
 
 	updateDialog();
 
@@ -25,6 +26,7 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 	connect(numberOfLayerLine, SIGNAL(textChanged(QString)), this, SLOT(setNewLayersSize()));
 	connect(save, SIGNAL(clicked()), this, SLOT(saveSettings()));
 	connect(learningAlrorithmButton, SIGNAL(clicked()), this, SLOT(learningAlgorithmSettings()));
+	connect(biasCheckBox, SIGNAL(stateChanged(int)), this, SLOT(bias()));
 
     setLayout(mainLayout);
     setWindowTitle(tr("Neural Network Settings"));
@@ -40,7 +42,44 @@ NetworkSettings::~NetworkSettings()
 	delete setLayerSizeButton;
 	delete layersSize;
 
+	delete minRangeLine;
+	delete maxRangeLine;
+
+	delete biasCheckBox;
+	delete biasLine;
+
 	delete save;
+}
+
+QGroupBox * NetworkSettings::createOtherDetailsGroup()
+{
+	QGroupBox * groupBox = new QGroupBox( tr("Other Details:") );
+
+	QLabel * weightsRangeLabel =  new QLabel("Weights range (min, max):");
+	QLabel * biasLabel = new QLabel("Bias (for neurons in first layer)");
+
+	biasCheckBox = new QCheckBox();
+	biasLine = new QLineEdit();
+	QHBoxLayout * hBox0 = new QHBoxLayout();
+	hBox0->addWidget( biasCheckBox );
+	hBox0->addWidget( biasLine );
+
+	minRangeLine = new QLineEdit();
+	maxRangeLine = new QLineEdit();
+
+	QHBoxLayout * hBox = new QHBoxLayout();
+	hBox->addWidget(minRangeLine);
+	hBox->addWidget(maxRangeLine);
+
+	QVBoxLayout * vBox = new QVBoxLayout();
+	vBox->addWidget(weightsRangeLabel);
+	vBox->addLayout( hBox );
+	vBox->addWidget( biasLabel );
+	vBox->addLayout( hBox0 );
+
+	groupBox->setLayout( vBox );
+
+	return groupBox;
 }
 
 QGroupBox *NetworkSettings::createLayersDetailsGroup()
@@ -166,10 +205,19 @@ void NetworkSettings::saveSettings()
 		QMessageBox::warning(this, tr("Missing data"),
 										                tr("Number of inputs in neurons is empty!"));
 	}
+	else if ( minRangeLine->text().isEmpty() || maxRangeLine->text().isEmpty() )
+	{
+		QMessageBox::warning(this, tr("Missing data"),
+				tr("One of weights range number is empty!"));
+	}
+	else if ( biasCheckBox->isChecked() && biasLine->text().isEmpty() )
+	{
+			QMessageBox::warning(this, tr("Missing data"),
+							tr("Bias Value is empty"));
+	}
 	else
 	{
 		saveSettingsToSingleton();
-		//saveSettingsToFile();
 		accept();
 	}
 
@@ -199,6 +247,18 @@ void NetworkSettings::saveSettingsToSingleton()
 
 	dataSettings().nrOfLayers = numberOfLayerLine->text().toInt();
 	dataSettings().nrInputData = numberInputDataForNeuronLine->text().toInt();
+
+	dataSettings().minWeightRange = minRangeLine->text().toDouble();
+	dataSettings().maxWeightRange = maxRangeLine->text().toDouble();
+
+	if ( biasCheckBox->isChecked() )
+	{
+		dataSettings().bias = biasLine->text().toDouble();
+	}
+	else
+	{
+		dataSettings().bias = 0;
+	}
 }
 
 void NetworkSettings::updateDialog()
@@ -227,4 +287,33 @@ void NetworkSettings::updateDialog()
 	}
 
 	numberInputDataForNeuronLine->setText(tmp.setNum(dataSettings().nrInputData));
+	minRangeLine->setText( tmp.setNum( dataSettings().minWeightRange ) );
+	maxRangeLine->setText( tmp.setNum( dataSettings().maxWeightRange ) );
+
+	if ( dataSettings().bias == 0)
+	{
+		biasCheckBox->setChecked(false);
+		biasLine->setText(tmp.setNum(0.0));
+		biasLine->setEnabled(false);
+	}
+	else
+	{
+		biasCheckBox->setChecked(true);
+		biasLine->setText(tmp.setNum(dataSettings().bias));
+		biasLine->setEnabled(true);
+	}
+}
+
+void NetworkSettings::bias()
+{
+	bool biasSelect = biasCheckBox->isChecked();
+
+	if ( biasSelect )
+	{
+		biasLine->setEnabled(true);
+	}
+	else
+	{
+		biasLine->setEnabled(false);
+	}
 }

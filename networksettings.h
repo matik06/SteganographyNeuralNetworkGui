@@ -31,12 +31,14 @@ public slots:
 	void setNewLayersSize();
 	void saveSettings();
 	void learningAlgorithmSettings();
+	void bias();
 
 private:
     Ui::NetworkSettingsClass ui;
 
     QGroupBox * createLayersDetailsGroup();
     QGroupBox * createLearningAlgorithmDetailsGroup();
+    QGroupBox * createOtherDetailsGroup();
 
     void saveSettingsToSingleton();
     void updateDialog();
@@ -54,6 +56,13 @@ private:
     bool setLayersNumber;
     LayersSize * layersSize;
     QLineEdit * numberInputDataForNeuronLine;
+
+    //others
+    QLineEdit * minRangeLine;
+    QLineEdit * maxRangeLine;
+
+    QCheckBox * biasCheckBox;
+    QLineEdit * biasLine;
 
     //save
     QPushButton * save;

@@ -52,6 +52,11 @@ public:
 	int iterations;
 	int popSizeDE;
 
+	// other settings
+	double minWeightRange;
+	double maxWeightRange;
+	double bias;
+
 	//neural network weights
 	int weightsNumber;
 //	bool isWeights;

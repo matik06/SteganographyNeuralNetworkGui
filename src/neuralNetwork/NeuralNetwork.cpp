@@ -221,6 +221,32 @@ double NeuralNetwork::getCostValue( double aWeights[], double ** aInputData )
 	return result;
 }
 
+
+double NeuralNetwork::getCostValue( double aWeights[], double * aInputData,
+		double * aOutputData )
+{
+	double * output = new double[this->_iOutputLayerSize];//
+	double dCV = 0;
+
+	//set weights in neural network from individual
+	this->setWeights( aWeights );
+
+	//counting output
+	output = this->getNeuralNetworkOutput( aInputData );
+
+	//counting cost value
+	for(int j = 0; j < this->_iOutputLayerSize; j++)
+	{
+		//tmpCV[j] = |p1-y1|+|p2-y2|+|p3-y3|...
+		dCV += fabs( aOutputData[j] - output[j] );
+	}
+
+	delete[] output;
+
+	return dCV;
+}
+
+
 double * NeuralNetwork::getWeights()
 {
 	//i am lazy today

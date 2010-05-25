@@ -7,33 +7,48 @@
 #include "Population.h"
 
 
-Population::Population(int iPopSize)
+Population::Population(int iPopSize, const bool initialize)
 {
 	this->_iPopSize = iPopSize;
-	this->_Individuals = new Individual[iPopSize];
+	this->_Individuals = new Individual*[iPopSize];
 
-	for (int i = 0; i < iPopSize; ++i)
+	if ( initialize )
 	{
-		_Individuals[i] = new Individual();
+		for (int i = 0; i < iPopSize; ++i)
+		{
+			_Individuals[i] = new Individual();
+		}
+	}
+	else
+	{
+		for (int i = 0; i < iPopSize; ++i)
+		{
+			_Individuals[i] = NULL;
+		}
 	}
 }
 
 Population::Population(const Population & other)
 {
 	this->_iPopSize = other._iPopSize;
-	this->_Individuals = new Individual[this->_iPopSize];
+	this->_Individuals = new Individual*[this->_iPopSize];
+
 	for(int i = 0;i<this->_iPopSize;i++)
 	{
-		this->_Individuals[i] = other._Individuals[i];
+		*this->_Individuals[i] = *other._Individuals[i];
 	}
 }
 
 Population::~Population()
 {
+	for (int i = 0; i < _iPopSize; ++i)
+	{
+		delete _Individuals[i];
+	}
 	delete[] _Individuals;
 }
 
-Individual& Population::operator[](int iIndex)
+Individual *& Population::operator[](int iIndex)
 {
 	return this->_Individuals[iIndex];
 }
@@ -49,7 +64,7 @@ Population & Population::operator=(const Population & other)
 	{
 		for(int i =0; i<_iPopSize; i++)
 		{
-			this->_Individuals[i] = other._Individuals[i];
+			*this->_Individuals[i] = *other._Individuals[i];
 		}
 		return *this;
 	}
@@ -58,13 +73,13 @@ Population & Population::operator=(const Population & other)
 Individual & Population::getBestIndividual( const OptymalizationType::Enum & oType )
 {
       int iIndex = getBestIndividualIndex(oType);
-      return this->_Individuals[iIndex];
+      return *this->_Individuals[iIndex];
 }
 
 Individual & Population::getWorstIndividual( const OptymalizationType::Enum & oType )
 {
       int iIndex = getWorstIndividualIndex(oType);
-      return this->_Individuals[iIndex];
+      return *this->_Individuals[iIndex];
 }
 
 int Population::getBestIndividualIndex( const OptymalizationType::Enum & oType )
@@ -99,19 +114,19 @@ int Population::getPopSize()
 
 void Population::popPrint()
 {
-	int iDimension= Individual::getDimensions();
-	for(int i=0 ;i< _iPopSize;i++)
-	{
-			std::cout<< "Os."<<i+1<<" : ";
-
-			for (int j =0; j<iDimension-1; j++)
-			{
-				std::cout<<this->_Individuals[i].getParam()[j]<<" , ";
-			}
-			std::cout<<this-> _Individuals[i].getParam()[iDimension-1]<< " = ";
-			std::cout<<this->_Individuals[i].getCostValue()<<std::endl;
-		}
-	std::cout<< "best is = Os."<<(getBestIndividualIndex(OptymalizationType::MINIMIM)+1)<<std::endl;
+//	int iDimension= Individual::getDimensions();
+//	for(int i=0 ;i< _iPopSize;i++)
+//	{
+//			std::cout<< "Os."<<i+1<<" : ";
+//
+//			for (int j =0; j<iDimension-1; j++)
+//			{
+//				std::cout<<this->_Individuals[i].getParam()[j]<<" , ";
+//			}
+//			std::cout<<this-> _Individuals[i].getParam()[iDimension-1]<< " = ";
+//			std::cout<<this->_Individuals[i].getCostValue()<<std::endl;
+//		}
+//	std::cout<< "best is = Os."<<(getBestIndividualIndex(OptymalizationType::MINIMIM)+1)<<std::endl;
 }
 
 
@@ -129,13 +144,13 @@ int Population::_findMinIndividual()
 //		}
 //	}
 
-	int cv = this->_Individuals[0].getCostValue();
+	double cv = this->_Individuals[0]->getCostValue();
 
 	for (int i = 1; i < _iPopSize; ++i)
 	{
-		if ( cv > _Individuals[i].getCostValue() )
+		if ( cv > _Individuals[i]->getCostValue() )
 		{
-			cv = _Individuals[i].getCostValue();
+			cv = _Individuals[i]->getCostValue();
 			iBestIndex = i;
 		}
 	}
@@ -157,13 +172,13 @@ int Population::_findMaxIndividual()
 //		}
 //	}
 
-	int cv = this->_Individuals[0].getCostValue();
+	int cv = this->_Individuals[0]->getCostValue();
 
 	for (int i = 1; i < _iPopSize; ++i)
 	{
-		if ( cv < _Individuals[i].getCostValue() )
+		if ( cv < _Individuals[i]->getCostValue() )
 		{
-			cv = _Individuals[i].getCostValue();
+			cv = _Individuals[i]->getCostValue();
 			iBestIndex = i;
 		}
 	}
@@ -171,3 +186,10 @@ int Population::_findMaxIndividual()
 	return iBestIndex;
 }
 
+void Population::resetWeights()
+{
+	for (int i = 0; i < _iPopSize; ++i)
+	{
+		_Individuals[i]->resetWeights();
+	}
+}

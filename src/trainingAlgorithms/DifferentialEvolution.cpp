@@ -8,10 +8,11 @@
 
 	DifferentialEvolution * DifferentialEvolution::getInstance(const Singleton & settings)
 	{
-	       return new DifferentialEvolution( settings.mutationConstant,
-	                       settings.crossover,
-	                       settings.popSizeDE,
-	                       settings.iterations);
+//	       return new DifferentialEvolution( settings.mutationConstant,
+//	                       settings.crossover,
+//	                       settings.popSizeDE,
+//	                       settings.iterations);
+		return NULL;
 	}
 
 DifferentialEvolution::DifferentialEvolution(double dMutationtConstant, double dCrossover,
@@ -99,7 +100,8 @@ Population DifferentialEvolution::_getThreeRandIndividuals(int iActiveIndividual
 	{
 		if(tmp[i]!=iActiveIndividualIndex)
 		{
-			p1[stop] =this->_population[tmp[i]];
+			//was p1[stop] = this->_population[tmp[i]];
+			*p1[stop] = *this->_population[tmp[i]];
 			++stop;
 		}
 		++i;
@@ -112,31 +114,31 @@ Population DifferentialEvolution::_getThreeRandIndividuals(int iActiveIndividual
 void DifferentialEvolution::_activeIndividualLoop(int iActiveIndividualIndex,
 												  NeuralNetwork & network, double ** dInputData)
 {
-	Population threeRandIndividuals = _getThreeRandIndividuals(iActiveIndividualIndex);
-	Individual tmpInd;
-
-	tmpInd = threeRandIndividuals[0]-threeRandIndividuals[1];
-	tmpInd *= this->_dMutationConstant;
-	tmpInd = tmpInd + threeRandIndividuals[2];
-
-	Individual activeInd = this->_population[iActiveIndividualIndex];
-    Individual tmpNewInd = _crossover(activeInd,tmpInd);
-
-    for(int i=0; i< this->_iPopSize;i++)
-     {
-     	this->_setCV(_population[i],network,dInputData);
-     }
-
-    //set cost value for activeInd individual
-//    this->_setCV( activeInd, network, dInputData );
-    //set cost value for tmpNewId individual
-    this->_setCV( tmpNewInd, network, dInputData );
-
-	if((_oType == OptymalizationType::MAXIMUM && activeInd<tmpNewInd)||
-	  (_oType == OptymalizationType::MINIMIM && activeInd>tmpNewInd ))
-	{
-		this->_population[iActiveIndividualIndex] = tmpNewInd;
-	}
+//	Population threeRandIndividuals = _getThreeRandIndividuals(iActiveIndividualIndex);
+//	Individual tmpInd;
+//
+//	tmpInd = *threeRandIndividuals[0] - *threeRandIndividuals[1];
+//	tmpInd *= this->_dMutationConstant;
+//	tmpInd = tmpInd + *threeRandIndividuals[2];
+//
+//	Individual activeInd = *this->_population[iActiveIndividualIndex];
+//    Individual tmpNewInd = _crossover(activeInd,tmpInd);
+//
+//    for(int i=0; i< this->_iPopSize;i++)
+//     {
+//     	this->_setCV(*_population[i],network,dInputData);
+//     }
+//
+//    //set cost value for activeInd individual
+////    this->_setCV( activeInd, network, dInputData );
+//    //set cost value for tmpNewId individual
+//    this->_setCV( tmpNewInd, network, dInputData );
+//
+//	if((_oType == OptymalizationType::MAXIMUM && activeInd<tmpNewInd)||
+//	  (_oType == OptymalizationType::MINIMIM && activeInd>tmpNewInd ))
+//	{
+//		*this->_population[iActiveIndividualIndex] = tmpNewInd;
+//	}
 }
 
 

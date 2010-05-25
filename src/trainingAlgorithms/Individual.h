@@ -65,6 +65,10 @@ public:
     */
     double* getParam();
 
+
+    double & operator[](int index);
+
+
     /**
     * get CostValue
     *
@@ -181,6 +185,8 @@ public:
       * print individual
       */
      void indPrint();
+
+     void resetWeights();
 private:
 
     /**

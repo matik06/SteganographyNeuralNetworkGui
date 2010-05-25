@@ -113,6 +113,11 @@ void ReadDataFile::loadSettingsFromFile( Singleton & settings, bool neuralNetwor
 	ds >> settings.iterations;
 	ds >> settings.popSizeDE;
 
+	//loading other settings
+	ds >> settings.minWeightRange;
+	ds >> settings.maxWeightRange;
+	ds >> settings.bias;
+
 	//loading neural network weights
 	if ( neuralNetworkWeights )
 	{

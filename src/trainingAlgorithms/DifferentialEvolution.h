@@ -68,7 +68,7 @@ public:
 	 * @param OptymalizationType::Enum oType - Type of optymalization (MINIMUM,MAXIMUM)
 	 * @return Individual- the best Individual after Differential Evolution Algorithm
 	 */
-	Individual simulate(OptymalizationType::Enum oType, NeuralNetwork & network,
+	Individual  simulate(OptymalizationType::Enum oType, NeuralNetwork & network,
 						double ** dInputData);
 
 	/**

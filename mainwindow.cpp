@@ -129,10 +129,9 @@ void MainWindow::learning()
 		  int iNrDataSets = rdf.loadFileWithInputs( dataSettings().nrInputData,
 				  dataSettings().getOutputLayerSize(), aInputs, aOutputs );
 
-		  neuralNetwork->setPatterns( aOutputs, iNrDataSets );
-
+		  evolutionaryAlgorithm->resetPopulation();
 		  Individual ind = evolutionaryAlgorithm->simulate( dataSettings().oType,
-				  *neuralNetwork, aInputs);
+				  *neuralNetwork, aInputs, aOutputs, iNrDataSets);
 
 		  neuralNetwork->setWeights( ind.getParam() );
 
@@ -782,8 +781,8 @@ void MainWindow::initializeNeuralNetworkObjects()
 
 	neuralNetwork = NeuralNetwork::getInstance( dataSettings() );
 
-	Individual::setBegin(0);
-	Individual::setEnd(1);
+	Individual::setBegin( dataSettings().minWeightRange );
+	Individual::setEnd( dataSettings().maxWeightRange );
 
 	if ( dataSettings().EvolAlgorithm == EvolAlgorithm::DE )
 	{
@@ -793,35 +792,6 @@ void MainWindow::initializeNeuralNetworkObjects()
 	{
 		evolutionaryAlgorithm = SOMA::getInstance( dataSettings() );
 	}
-
-
-
-//	neuralNetwork =  new NeuralNetwork(dataSettings().nrOfLayers,
-//										dataSettings().layersSize,
-//										dataSettings().nrInputData,
-//										dataSettings().neuronType,
-//										dataSettings().alfa,
-//										dataSettings().beta);
-//
-//	if(dataSettings().EvolAlgorithm == EvolAlgorithm::DE)
-//	{
-//		evolutionaryAlgorithm = new DifferentialEvolution(dataSettings().mutationConstant,
-//															 dataSettings().crossover,
-//															 dataSettings().popSizeDE,
-//															 dataSettings().iterations);
-//	}
-//	else
-//	{
-//		evolutionaryAlgorithm = new SOMA(dataSettings().step,
-//										dataSettings().pathLength,
-//										dataSettings().PRT,
-//										dataSettings().accError,
-//										dataSettings().migrations,
-//										dataSettings().popSizeSoma);
-//	}
-//
-//	Individual::setBegin(0);
-//	Individual::setEnd(1);
 }
 
 QString MainWindow::doubletostring(double tab[], int size)

@@ -99,6 +99,11 @@ void Singleton::setDeafultValues()
 	mutationConstant = 0.8;
 	crossover = 0.25;
 
+	//other settings
+	minWeightRange = -1;
+	maxWeightRange = 1;
+	bias = 0;
+
 	//weights
 //	isWeights = false;
 	weightsNumber = 0;

@@ -190,3 +190,15 @@ Individual& Individual::operator=(const Individual& other)
 }
 
 
+double & Individual::operator[]( int index )
+{
+	return _aParam[ index ];
+}
+
+void Individual::resetWeights()
+{
+	for (int i = 0; i < _iDimensions; ++i)
+	{
+		_aParam[i] = _randWeight();
+	}
+}

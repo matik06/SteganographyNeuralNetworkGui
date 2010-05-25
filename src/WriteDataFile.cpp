@@ -120,6 +120,11 @@ void WriteDataFile::saveSettingsToFile( Singleton & settings, bool neuralNetwork
 	ds << settings.iterations;
 	ds << settings.popSizeDE;
 
+	//savind other settings
+	ds << settings.minWeightRange;
+	ds << settings.maxWeightRange;
+	ds << settings.bias;
+
 	//saving neural network weights
 	if ( neuralNetworkWeights )
 	{

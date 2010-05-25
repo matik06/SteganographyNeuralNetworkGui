@@ -86,12 +86,16 @@ public:
 	 */
 	double * getNeuralNetworkOutput( double aInptSignal[] );
 
+
 	/**
 	 *	return cost value for individual
 	 *
 	 *	@param Individual individual
 	 */
 	double getCostValue( double dWeights[], double ** dInputData );
+
+
+	double getCostValue( double dWeights[], double * aInputData, double * aOutputData );
 
 
 	double * getWeights();

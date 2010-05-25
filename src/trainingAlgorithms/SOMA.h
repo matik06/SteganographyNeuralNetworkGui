@@ -25,6 +25,9 @@ private:
 	//using to produce PRTVector
 	double _dPRT;
 
+	//PRTVector
+	int * _PRTVector;
+
 	//Accepted Error
 	double _dAccError;
 
@@ -67,7 +70,7 @@ public:
      *@param SOMA& other - other SOMA object which values are assign to current SOMA object
      *@return SOMA& -current SOMA object .
      */
-    SOMA& operator=(const SOMA & other);
+    SOMA & operator=(const SOMA & other);
 
 	/**
 	 * Simulation SOMA Algorithm
@@ -76,7 +79,7 @@ public:
 	 * @return Individual- the best Individual after SOMA Algorithm
 	 */
 	Individual simulate(OptymalizationType::Enum oType, NeuralNetwork & network,
-						double ** dInputData );
+						double ** dInputData, double ** dOutputData, int iNrDataSet );
 
 private:
 	/**
@@ -89,7 +92,8 @@ private:
 	/**
 	 * Simulate one migration loop
 	 */
-	void _MigrationLoop( NeuralNetwork & network, double ** dInputData );
+	void _MigrationLoop( NeuralNetwork & network, double * aInputData,
+			double * aOutputData, int iLeaderIndex);
 
 	/**
 	 * Simulation for one individual
@@ -98,7 +102,7 @@ private:
 	 * @param int iLeaderIndex - index of the best individual
 	 */
 	void _ActivIndividualLoop(int iActiveIndex, int iLeaderIndex, NeuralNetwork & network,
-							  double ** dInputData );
+							  double * aInputData, double * aOutputData );
 
 	/**
 	 * Simulation for each step T for one individual
@@ -108,7 +112,9 @@ private:
 	 * @param int iLeaderIndex - index of leader individual
 	 * return Individual - individual in dt step size
 	 */
-	Individual _CalculateForStep(double dt,int iActiveIndex, int iLeaderIndex);
+	Individual * _CalculateForStep(double dt,int iActiveIndex, int iLeaderIndex);
+
+	void _setBetterIndividual( int iActiveInd, Individual & newInd );
 
 };
 

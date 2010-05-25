@@ -18,14 +18,14 @@ private:
 	int _iPopSize;
 
 	//array of individuals
-	Individual* _Individuals;
+	Individual ** _Individuals;
 public:
 	/**
 	 * constructor
 	 *
 	 *@param int iPopSize - Size of population ( number of individuals)
 	 */
-	Population(int iPopSize);
+	Population(int iPopSize, const bool initialize = true);
 
 	/**
 	 * copy constructor
@@ -45,7 +45,7 @@ public:
      *@param int iIndex - index in array of individuals
      *@return Individual - Chosen individual;
     */
-    Individual&  operator[](int iIndex);
+    Individual *& operator[](int iIndex);
 
     /**
      *assignment operator for population
@@ -93,6 +93,8 @@ public:
 
     //print population
     void popPrint();
+
+    void resetWeights();
 
 private:
 
