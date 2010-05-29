@@ -17,6 +17,8 @@ protected:
 	int _iNrOfInputData;
 	//array of weights in Neuron
 	double * _aWeights;
+	//bias input
+	double _dBias;
 
 public:
 
@@ -25,7 +27,7 @@ public:
 	 *
 	 * @param: int iNrInputData - number of input data (weights)
 	 */
-	Neuron( int iNrInputData );
+	Neuron( int iNrInputData, double dBiasValue = 0 );
 	virtual ~Neuron();
 
 

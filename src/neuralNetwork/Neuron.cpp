@@ -13,10 +13,12 @@
  ****************************************/
 
 
-Neuron::Neuron( int iNrInputData):
+Neuron::Neuron( int iNrInputData, double dBias):
 	_iNrOfInputData(iNrInputData)
 {
-	this->_aWeights = new double[ this->_iNrOfInputData ];
+	_dBias = dBias;
+	// "+1" weight for bias
+	this->_aWeights = new double[ this->_iNrOfInputData + 1 ];
 
 	/*
 	 * initialization all values in array with 0

@@ -122,6 +122,13 @@ void MainWindow::learning()
 	  else
 	  {
 		  ReadDataFile rdf = ReadDataFile( fileName );
+
+		  if ( !rdf.isCorrectData( dataSettings().nrInputData, dataSettings().getOutputLayerSize() ) )
+		  {
+			  QMessageBox::warning(this,tr("Learning Failed"),tr("Incorrect neural network settings, or incorrect format of data"));
+			  return;
+		  }
+
 		  double ** aInputs = NULL;
 		  double ** aOutputs = NULL;
 

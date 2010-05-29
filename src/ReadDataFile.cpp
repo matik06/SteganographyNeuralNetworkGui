@@ -46,18 +46,13 @@ ReadDataFile::~ReadDataFile()
 int ReadDataFile::loadFileWithInputs( int iNrInput, int iNrOutput,
 		double **& aInputData, double **& aOutputData )
 {
-	if ( _file == NULL )
+	if ( !isCorrectData(iNrInput, iNrOutput) )
 	{
-		return false;	//if file doesn't exits return false
+		return -1;
 	}
 
 	QTextStream ts( _file );
 	int iNrDataSet = countNrSets( ts );	//get number of data sets in file
-
-	if ( iNrDataSet < 2 )
-	{
-		return false;	//in file have to more than 2 data sets
-	}
 
 	initializeArray( aInputData, iNrDataSet, iNrInput );
 	initializeArray( aOutputData, iNrDataSet, iNrOutput );
@@ -76,6 +71,38 @@ int ReadDataFile::loadFileWithInputs( int iNrInput, int iNrOutput,
 	}
 
 	return iNrDataSet;
+}
+
+
+bool ReadDataFile::isCorrectData( int iNrInput, int iNrOutput )
+{
+	if ( _file == NULL )
+	{
+		return false;	//if file doesn't exits return false
+	}
+
+	QTextStream ts( _file );
+	int iNrDataSet = countNrSets( ts );	//get number of data sets in file
+
+	if ( iNrDataSet < 2 )
+	{
+		return false;	//in file have to more than 2 data sets
+	}
+
+	readChar( ts, '{' );
+	readChar( ts, '{' );
+	readChar( ts, '{' );
+
+	int iNrCurrentInput = countNumbers( ts );
+	readChar( ts, '{' );
+	int iNrCurrentOutput = countNumbers( ts );
+
+	ts.seek( 0 );
+
+	if ( iNrCurrentInput != iNrInput || iNrCurrentOutput != iNrOutput )
+		return false;
+	else
+		return true;
 }
 
 
@@ -156,7 +183,6 @@ void ReadDataFile::readData( QTextStream & ts, double * aData, int iDataSize )
 	for (int i = 0; i < iDataSize - 1; ++i)
 	{
 		ts >> aData[i];		//reading single number from set
-		int wynik = aData[i];
 		readChar( ts, ',' );
 	}
 
@@ -237,4 +263,21 @@ void ReadDataFile::loadEnumArray( QDataStream & ds, T *& array, int size)
 		ds >> temp;
 		array[i] = (KindOfNeuron::Enum)temp;
 	}
+}
+
+int ReadDataFile::countNumbers( QTextStream & ts )
+{
+	QChar c;
+	int result = 1;
+
+	do
+	{
+		ts >> c;
+
+		if ( c == ',' )
+			result++;
+	}
+	while ( c != '}' );
+
+	return result;
 }

@@ -28,6 +28,7 @@ public:
 			double **& aOutputs);
 	void loadSettingsFromFile( Singleton & settings, bool neuralNetworkWeights );
 
+	bool isCorrectData( int iNrInput, int iNrOutput );
 	static bool isFileExist(QString file);
 
 protected:
@@ -46,6 +47,8 @@ protected:
 
 	template <class T>
 	void loadEnumArray( QDataStream & ds, T *& array, int size);
+
+	int countNumbers( QTextStream & ts );
 };
 
 
